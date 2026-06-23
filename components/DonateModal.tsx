@@ -8,8 +8,7 @@ import { X, ArrowRight, Sparkle } from "@/components/icons";
 const PRESETS = [5, 10, 25, 50];
 
 function venmoUrl(amount: number) {
-  const note = `Support StartFest — ${BRAND.donateBeneficiary} 🤠`;
-  return `https://venmo.com/${encodeURIComponent(BRAND.venmoHandle)}?txn=pay&amount=${amount}&note=${encodeURIComponent(note)}`;
+  return `https://venmo.com/${encodeURIComponent(BRAND.venmoHandle)}?txn=pay&amount=${amount}&note=${encodeURIComponent(BRAND.donateNote)}`;
 }
 
 export function DonateModal() {

@@ -16,9 +16,10 @@ export const BRAND = {
   sponsorCta: "See your real price",
   sponsorUrl: process.env.NEXT_PUBLIC_ASKFLORENCE_URL || "https://askflorence.health",
 
-  // Donations → Startup School. Set NEXT_PUBLIC_VENMO_HANDLE to the real handle.
-  venmoHandle: process.env.NEXT_PUBLIC_VENMO_HANDLE || "SiliconSlopes",
+  // Donations → Startup School (Clint Betts collects on Venmo).
+  venmoHandle: process.env.NEXT_PUBLIC_VENMO_HANDLE || "Clint-Betts",
   donateBeneficiary: "Startup School",
+  donateNote: "StartFest Pal ⚡ powered by AskFlorence",
 };
 
 export const CREDIT_LINE = `An app by ${BRAND.builder} (${BRAND.builderAlias})`;
