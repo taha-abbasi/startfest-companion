@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  color: #e9f0ff;
+  background: #07194170;
+  background-image: linear-gradient(
+    180deg,
+    #061634 0%,
+    #082155 26%,
+    #0a346e 58%,
+    #0c5572 100%
+  );
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Subtle dotted texture nod to the flyer's corner motifs */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(120% 80% at 50% 0%, black 0%, transparent 70%);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-white/10 bg-white/[0.045] backdrop-blur-sm transition;
+  }
+  .card-hover {
+    @apply hover:border-white/20 hover:bg-white/[0.07];
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-lime {
+    @apply btn bg-lime text-navy-900 hover:bg-lime-bright shadow-glow;
+  }
+  .btn-ghost {
+    @apply btn border border-white/15 bg-white/[0.03] text-white hover:bg-white/10;
+  }
+  .btn-going {
+    @apply btn border border-lime/40 bg-lime/10 text-lime hover:bg-lime/15;
+  }
+  .input {
+    @apply w-full rounded-xl border border-white/15 bg-white/[0.06] px-3.5 py-3 text-white placeholder-white/40 outline-none transition focus:border-lime/60 focus:bg-white/[0.09] focus:ring-2 focus:ring-lime/20;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-white/85;
+  }
+}
+
+/* Custom scrollbar to match dark theme */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.28);
+  background-clip: content-box;
+}
+
+/* Hide number input spinners */
+input[type="tel"]::-webkit-outer-spin-button,
+input[type="tel"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
