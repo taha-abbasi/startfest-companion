@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { type Session } from "@/data/schedule";
 import {
   sessionMeta,
@@ -69,6 +70,8 @@ interface Item {
   newTab?: boolean;
 }
 
+const MENU_WIDTH = 256; // w-64
+
 export function AddToCalendar({
   session,
   agenda,
@@ -81,15 +84,46 @@ export function AddToCalendar({
   variant?: "icon" | "button";
 }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [origin, setOrigin] = useState("");
-  const ref = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => setOrigin(window.location.origin), []);
   useEffect(() => {
+    setMounted(true);
+    setOrigin(window.location.origin);
+  }, []);
+
+  // Anchor the (portaled, fixed-position) menu to the trigger, flipping up when
+  // there isn't room below. Recomputed on open, scroll, and resize.
+  const reposition = useCallback(() => {
+    const t = triggerRef.current;
+    if (!t) return;
+    const r = t.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const left = Math.max(8, Math.min(r.right - MENU_WIDTH, vw - MENU_WIDTH - 8));
+    const menuH = menuRef.current?.offsetHeight ?? 300;
+    let top = r.bottom + 8;
+    if (top + menuH > vh - 8) top = Math.max(8, r.top - menuH - 8);
+    setPos({ top, left });
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    reposition();
+    const f = () => reposition();
+    window.addEventListener("scroll", f, true);
+    window.addEventListener("resize", f);
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    if (open) window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("scroll", f, true);
+      window.removeEventListener("resize", f);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open, reposition]);
 
   let items: Item[] = [];
   let heading = "Add to calendar";
@@ -116,11 +150,12 @@ export function AddToCalendar({
 
   const trigger =
     variant === "button" ? (
-      <button onClick={() => setOpen((v) => !v)} className="btn-lime">
+      <button ref={triggerRef} onClick={() => setOpen((v) => !v)} className="btn-lime" aria-haspopup="menu" aria-expanded={open}>
         <Calendar width={16} height={16} /> Add to calendar
       </button>
     ) : (
       <button
+        ref={triggerRef}
         onClick={() => setOpen((v) => !v)}
         className="btn-ghost px-2.5 py-2"
         title="Add to calendar"
@@ -133,39 +168,50 @@ export function AddToCalendar({
     );
 
   return (
-    <div className="relative" ref={ref}>
+    <>
       {trigger}
-      {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden />
-          <div
-            role="menu"
-            className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-white/12 bg-[#0a1f4d] p-1.5 shadow-2xl animate-fade-up"
-          >
-            <div className="flex items-center gap-2 px-2.5 py-2 text-[11px] font-bold uppercase tracking-wider text-white/40">
-              <Check width={12} height={12} className="text-lime" />
-              {heading}
+      {mounted &&
+        open &&
+        createPortal(
+          <>
+            <div className="fixed inset-0 z-[90]" onClick={() => setOpen(false)} aria-hidden />
+            <div
+              ref={menuRef}
+              role="menu"
+              style={{
+                position: "fixed",
+                top: pos?.top ?? -9999,
+                left: pos?.left ?? -9999,
+                width: MENU_WIDTH,
+                visibility: pos ? "visible" : "hidden",
+              }}
+              className="z-[100] overflow-hidden rounded-2xl border border-white/12 bg-[#0a1f4d] p-1.5 shadow-2xl animate-fade-up"
+            >
+              <div className="flex items-center gap-2 px-2.5 py-2 text-[11px] font-bold uppercase tracking-wider text-white/40">
+                <Check width={12} height={12} className="text-lime" />
+                {heading}
+              </div>
+              {items.map((it) => (
+                <a
+                  key={it.key}
+                  href={it.href}
+                  target={it.newTab ? "_blank" : undefined}
+                  rel={it.newTab ? "noopener noreferrer" : undefined}
+                  onClick={() => setOpen(false)}
+                  role="menuitem"
+                  className="flex items-center gap-3 rounded-xl px-2.5 py-2 text-left transition hover:bg-white/[0.07]"
+                >
+                  <Brand kind={it.brand} />
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold text-white">{it.label}</span>
+                    {it.sub && <span className="block text-[11px] text-white/45">{it.sub}</span>}
+                  </span>
+                </a>
+              ))}
             </div>
-            {items.map((it) => (
-              <a
-                key={it.key}
-                href={it.href}
-                target={it.newTab ? "_blank" : undefined}
-                rel={it.newTab ? "noopener noreferrer" : undefined}
-                onClick={() => setOpen(false)}
-                role="menuitem"
-                className="flex items-center gap-3 rounded-xl px-2.5 py-2 text-left transition hover:bg-white/[0.07]"
-              >
-                <Brand kind={it.brand} />
-                <span className="min-w-0">
-                  <span className="block text-sm font-semibold text-white">{it.label}</span>
-                  {it.sub && <span className="block text-[11px] text-white/45">{it.sub}</span>}
-                </span>
-              </a>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+          </>,
+          document.body
+        )}
+    </>
   );
 }

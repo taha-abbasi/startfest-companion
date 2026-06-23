@@ -23,8 +23,18 @@ export const metadata: Metadata = {
     description,
     siteName: "StartFest Companion",
     type: "website",
+    url: "/",
+    locale: "en_US",
   },
   twitter: { card: "summary_large_image", title, description },
+  keywords: [
+    "StartFest",
+    "StartFest 2026",
+    "Silicon Slopes",
+    "conference schedule",
+    "Utah startups",
+    "tech conference Utah",
+  ],
   icons: {
     icon: [
       {
