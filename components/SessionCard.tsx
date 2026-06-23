@@ -11,7 +11,8 @@ import {
   sessionEnd,
 } from "@/data/schedule";
 import { useApp } from "@/components/store";
-import { Plus, Check, Users, Calendar, Warn, Clock } from "@/components/icons";
+import { AddToCalendar } from "@/components/AddToCalendar";
+import { Plus, Check, Users, Warn, Clock } from "@/components/icons";
 
 function hexToRgba(hex: string, a: number): string {
   const h = hex.replace("#", "");
@@ -106,14 +107,7 @@ export function SessionCard({ session, now }: { session: Session; now: number })
           </button>
 
           <div className="ml-auto flex items-center gap-2">
-            <a
-              href={`/api/ics/session/${encodeURIComponent(session.id)}`}
-              className="btn-ghost px-2.5 py-2"
-              title="Add to calendar (with reminder)"
-              aria-label="Add to calendar"
-            >
-              <Calendar width={16} height={16} />
-            </a>
+            <AddToCalendar session={session} />
             <button
               onClick={() => toggle(session.id)}
               disabled={busy}

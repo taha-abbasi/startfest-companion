@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { attendees, signups } from "@/lib/db";
-import { getIdentityEmail } from "@/lib/identity";
+import { getIdentityEmail, makeFeedToken } from "@/lib/identity";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,5 +26,6 @@ export async function GET() {
       showPublicly: att.showPublicly,
     },
     sessionIds,
+    feedToken: makeFeedToken(email),
   });
 }

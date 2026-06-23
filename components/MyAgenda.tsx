@@ -4,11 +4,12 @@ import React, { useMemo } from "react";
 import { SESSIONS, DAYS, sessionStart, getSession, findConflicts, type Session } from "@/data/schedule";
 import { useApp } from "@/components/store";
 import { SessionCard } from "@/components/SessionCard";
+import { AddToCalendar } from "@/components/AddToCalendar";
 import { useNow } from "@/components/useNow";
-import { Calendar, Warn, Share, Pencil, Sparkle } from "@/components/icons";
+import { Warn, Share, Pencil, Sparkle } from "@/components/icons";
 
 export function MyAgenda() {
-  const { mySet, attendee, editProfile, setView, openOnboarding, pushToast } = useApp();
+  const { mySet, attendee, feedToken, editProfile, setView, openOnboarding, pushToast } = useApp();
   const now = useNow();
 
   const mine = useMemo(
@@ -86,9 +87,7 @@ export function MyAgenda() {
           <button onClick={share} className="btn-ghost">
             <Share width={16} height={16} /> Share
           </button>
-          <a href="/api/ics/me" className="btn-lime">
-            <Calendar width={16} height={16} /> Add all to calendar
-          </a>
+          <AddToCalendar agenda feedToken={feedToken} variant="button" />
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import { signups } from "@/lib/db";
-import { getIdentityEmail, verifyManageToken } from "@/lib/identity";
+import { getIdentityEmail, verifyManageToken, verifyFeedToken } from "@/lib/identity";
 import { getSession, sessionStart, type Session } from "@/data/schedule";
 import { buildIcs, icsFilename } from "@/lib/ics";
 import { getBaseUrl } from "@/lib/baseUrl";
@@ -11,7 +11,10 @@ export const dynamic = "force-dynamic";
 // Identity comes from the cookie, or a signed ?t= manage token (for email links).
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const tokenEmail = verifyManageToken(url.searchParams.get("t"));
+  const t = url.searchParams.get("t");
+  // Accept a read-only feed token (for live subscriptions) or a manage token,
+  // falling back to the session cookie for in-app downloads.
+  const tokenEmail = verifyFeedToken(t) || verifyManageToken(t);
   const email = tokenEmail || getIdentityEmail();
   if (!email) return new Response("Not identified", { status: 401 });
 

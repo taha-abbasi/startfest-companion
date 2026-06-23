@@ -5,6 +5,7 @@ import {
   isValidEmail,
   normalizeEmail,
   makeIdentityToken,
+  makeFeedToken,
   IDENTITY_COOKIE,
   IDENTITY_COOKIE_OPTS,
 } from "@/lib/identity";
@@ -73,6 +74,7 @@ export async function POST(req: Request) {
   const res = NextResponse.json({
     attendee: { name, email, phone, emailOptIn, smsOptIn: update.smsOptIn, showPublicly },
     sessionIds,
+    feedToken: makeFeedToken(email),
   });
   res.cookies.set(IDENTITY_COOKIE, makeIdentityToken(email), IDENTITY_COOKIE_OPTS);
   // Touch cookies() so Next treats this as dynamic consistently.

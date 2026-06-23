@@ -102,3 +102,9 @@ export const makeManageToken = (email: string) => scopedSign("manage", email);
 export const verifyManageToken = (t: string | undefined | null) => scopedVerify("manage", t);
 export const makeUnsubToken = (email: string) => scopedSign("unsub", email);
 export const verifyUnsubToken = (t: string | undefined | null) => scopedVerify("unsub", t);
+
+// "feed" tokens are read-only: they grant access to an attendee's calendar feed
+// (for live calendar subscriptions) but — unlike a manage token — cannot be used
+// to sign in. Safe to embed in a webcal subscription URL.
+export const makeFeedToken = (email: string) => scopedSign("feed", email);
+export const verifyFeedToken = (t: string | undefined | null) => scopedVerify("feed", t);

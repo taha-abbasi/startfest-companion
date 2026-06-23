@@ -47,6 +47,7 @@ interface AppCtx {
   mySet: Set<string>;
   counts: Record<string, number>;
   conflictIds: Set<string>;
+  feedToken: string | null;
 
   view: View;
   setView: (v: View) => void;
@@ -85,16 +86,19 @@ export function AppProvider({
   initialAttendee,
   initialSessionIds,
   initialCounts,
+  initialFeedToken = null,
   children,
 }: {
   initialAttendee: Attendee | null;
   initialSessionIds: string[];
   initialCounts: Record<string, number>;
+  initialFeedToken?: string | null;
   children: React.ReactNode;
 }) {
   const [attendee, setAttendee] = useState<Attendee | null>(initialAttendee);
   const [mySet, setMySet] = useState<Set<string>>(new Set(initialSessionIds));
   const [counts, setCounts] = useState<Record<string, number>>(initialCounts);
+  const [feedToken, setFeedToken] = useState<string | null>(initialFeedToken);
   const [view, setView] = useState<View>("schedule");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [onboarding, setOnboarding] = useState<OnboardingState>({ open: false, pendingSessionId: null });
@@ -242,6 +246,7 @@ export function AppProvider({
         const data = await res.json();
         if (!res.ok) return { ok: false, error: data?.error || "Could not save your details." };
         setAttendee(data.attendee);
+        if (data.feedToken) setFeedToken(data.feedToken);
         if (Array.isArray(data.sessionIds)) setMySet(new Set(data.sessionIds));
         const pending = onboarding.pendingSessionId;
         closeOnboarding();
@@ -266,6 +271,7 @@ export function AppProvider({
     mySet,
     counts,
     conflictIds,
+    feedToken,
     view,
     setView,
     isGoing,

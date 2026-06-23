@@ -1,5 +1,5 @@
 import { AppClient } from "@/components/AppClient";
-import { getIdentityEmail } from "@/lib/identity";
+import { getIdentityEmail, makeFeedToken } from "@/lib/identity";
 import { attendees, signups } from "@/lib/db";
 import type { Attendee } from "@/components/store";
 
@@ -10,14 +10,17 @@ async function loadInitial(): Promise<{
   attendee: Attendee | null;
   sessionIds: string[];
   counts: Record<string, number>;
+  feedToken: string | null;
 }> {
   let attendee: Attendee | null = null;
   let sessionIds: string[] = [];
   let counts: Record<string, number> = {};
+  let feedToken: string | null = null;
 
   try {
     const email = getIdentityEmail();
     if (email) {
+      feedToken = makeFeedToken(email);
       const att = await (await attendees()).findOne({ email });
       if (att) {
         attendee = {
@@ -42,12 +45,17 @@ async function loadInitial(): Promise<{
     console.error("[page] initial load failed:", e);
   }
 
-  return { attendee, sessionIds, counts };
+  return { attendee, sessionIds, counts, feedToken };
 }
 
 export default async function Page() {
-  const { attendee, sessionIds, counts } = await loadInitial();
+  const { attendee, sessionIds, counts, feedToken } = await loadInitial();
   return (
-    <AppClient initialAttendee={attendee} initialSessionIds={sessionIds} initialCounts={counts} />
+    <AppClient
+      initialAttendee={attendee}
+      initialSessionIds={sessionIds}
+      initialCounts={counts}
+      initialFeedToken={feedToken}
+    />
   );
 }
