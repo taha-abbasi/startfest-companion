@@ -12,7 +12,7 @@ import {
 } from "@/data/schedule";
 import { useApp } from "@/components/store";
 import { AddToCalendar } from "@/components/AddToCalendar";
-import { Plus, Check, Users, Warn, Clock } from "@/components/icons";
+import { Plus, Check, Users, Warn, Clock, MessageCircle, Mic } from "@/components/icons";
 
 function hexToRgba(hex: string, a: number): string {
   const h = hex.replace("#", "");
@@ -23,7 +23,7 @@ function hexToRgba(hex: string, a: number): string {
 }
 
 export function SessionCard({ session, now }: { session: Session; now: number }) {
-  const { isGoing, countFor, toggle, busyId, openAttendees, conflictIds } = useApp();
+  const { isGoing, countFor, toggle, busyId, openAttendees, openChat, openNotes, conflictIds } = useApp();
   const track = TRACKS[session.track];
   const room = ROOMS[session.room];
   const going = isGoing(session.id);
@@ -117,6 +117,22 @@ export function SessionCard({ session, now }: { session: Session; now: number })
               {going ? "Going" : "Add"}
             </button>
           </div>
+        </div>
+
+        {/* Chat + record — one tap from every session */}
+        <div className="mt-3 flex items-center gap-1.5 border-t border-white/5 pt-2.5">
+          <button
+            onClick={() => openChat(session.id)}
+            className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold text-white/60 transition hover:bg-white/5 hover:text-white"
+          >
+            <MessageCircle width={14} height={14} /> Chat &amp; notes
+          </button>
+          <button
+            onClick={() => openNotes(session.id)}
+            className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold text-white/60 transition hover:bg-white/5 hover:text-white"
+          >
+            <Mic width={14} height={14} /> Record
+          </button>
         </div>
       </div>
     </div>
