@@ -9,6 +9,7 @@ import { ScheduleView } from "@/components/ScheduleView";
 import { MyAgenda } from "@/components/MyAgenda";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { AttendeesModal } from "@/components/AttendeesModal";
+import { MeetTheMaker } from "@/components/MeetTheMaker";
 import { Toasts } from "@/components/Toasts";
 
 function Body() {
@@ -36,6 +37,7 @@ function Body() {
       <main className="px-4 pt-6">
         <div className="mx-auto max-w-4xl">{view === "schedule" ? <ScheduleView /> : <MyAgenda />}</div>
       </main>
+      <MeetTheMaker />
       <Footer />
       <BottomNav />
       <OnboardingModal />

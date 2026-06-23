@@ -5,12 +5,15 @@ export const BRAND = {
   builder: "Taha Salahuddin Abbasi",
   builderAlias: "The Brown Cowboy",
   builderUrl: "https://tahaabbasi.com",
+  photo: "/taha.jpg",
+  introPostUrl:
+    "https://www.siliconslopes.com/c/posts/gave-up-on-health-insurance-as-a-founder-i-did-too",
 
   // "Powered by AskFlorence" — a genuine lead-gen placement for the founder crowd.
   sponsorName: "AskFlorence",
   sponsorTagline:
-    "Real ACA health plans with your subsidies applied — built for founders, freelancers & small teams.",
-  sponsorCta: "Join the waitlist",
+    "Founders: the plan Healthcare.gov showed me for $960/mo was actually $7 with hidden ACA subsidies. AskFlorence finds your real price in seconds — free for consumers.",
+  sponsorCta: "See your real price",
   sponsorUrl: process.env.NEXT_PUBLIC_ASKFLORENCE_URL || "https://askflorence.health",
 };
 
