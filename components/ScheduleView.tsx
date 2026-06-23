@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
   SESSIONS,
   DAYS,
@@ -13,8 +13,10 @@ import {
 } from "@/data/schedule";
 import { SessionCard } from "@/components/SessionCard";
 import { PopularSessions } from "@/components/PopularSessions";
+import { UpNext } from "@/components/UpNext";
 import { useApp } from "@/components/store";
 import { useNow } from "@/components/useNow";
+import { Calendar } from "@/components/icons";
 
 const ROOM_ORDER: Record<string, number> = {
   mainstage: 0,
@@ -71,6 +73,9 @@ export function ScheduleView() {
     return t >= d2start ? 2 : 1;
   });
   const [selected, setSelected] = useState<Set<TrackId>>(new Set());
+  const fullRef = useRef<HTMLDivElement>(null);
+  const scrollToFull = () =>
+    fullRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const rows = useMemo(() => buildRows(day, selected), [day, selected]);
   const dayMeta = DAYS.find((d) => d.day === day)!;
@@ -89,8 +94,21 @@ export function ScheduleView() {
 
   return (
     <div>
-      {/* Day tabs */}
-      <div className="sticky top-0 z-20 -mx-4 mb-4 bg-gradient-to-b from-[#071a41] via-[#071a41]/95 to-transparent px-4 pb-3 pt-3 backdrop-blur-sm">
+      {/* Most important: what's happening now / up next */}
+      <UpNext now={now} onSeeFull={scrollToFull} />
+
+      {/* Trending across both days (collapsible) */}
+      <PopularSessions />
+
+      {/* ── Full schedule (scroll target for "See full schedule") ── */}
+      <div ref={fullRef} className="scroll-mt-2">
+        <div className="mb-3 flex items-center gap-2 px-1">
+          <Calendar width={16} height={16} className="text-white/60" />
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white">Full schedule</h2>
+        </div>
+
+        {/* Day tabs */}
+        <div className="sticky top-0 z-20 -mx-4 mb-4 bg-gradient-to-b from-[#071a41] via-[#071a41]/95 to-transparent px-4 pb-3 pt-3 backdrop-blur-sm">
         <div className="flex items-center gap-2">
           {DAYS.map((d) => {
             const active = d.day === day;
@@ -154,10 +172,7 @@ export function ScheduleView() {
         </div>
       </div>
 
-      {/* Trending across both days */}
-      <PopularSessions />
-
-      {/* Day summary */}
+        {/* Day summary */}
       <div className="mb-4 flex items-center justify-between px-1 text-sm">
         <span className="text-white/55">
           {dayMeta.weekday}, June {dayMeta.date.slice(-2)}
@@ -206,6 +221,7 @@ export function ScheduleView() {
             No sessions match this filter on {dayMeta.weekday}. Try another track.
           </div>
         )}
+      </div>
       </div>
     </div>
   );

@@ -81,3 +81,13 @@ export const Pencil = (p: P) => (
     <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
   </svg>
 );
+export const ChevronDown = (p: P) => (
+  <svg {...base(p)}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+);
+export const Bolt = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" />
+  </svg>
+);
