@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useApp } from "@/components/store";
 import { getSession } from "@/data/schedule";
-import { X, ArrowRight } from "@/components/icons";
+import { X, ArrowRight, Plus } from "@/components/icons";
 import { BRAND } from "@/lib/brand";
 
 function Checkbox({
@@ -54,6 +54,7 @@ export function OnboardingModal() {
   const [emailOptIn, setEmailOptIn] = useState(true);
   const [smsOptIn, setSmsOptIn] = useState(false);
   const [showPublicly, setShowPublicly] = useState(true);
+  const [showPhone, setShowPhone] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -66,6 +67,7 @@ export function OnboardingModal() {
       setEmailOptIn(attendee?.emailOptIn ?? true);
       setSmsOptIn(attendee?.smsOptIn ?? false);
       setShowPublicly(attendee?.showPublicly ?? true);
+      setShowPhone(!!attendee?.phone); // only reveal phone if they already added one
       setErr(null);
     }
   }, [onboarding.open, attendee]);
@@ -153,20 +155,47 @@ export function OnboardingModal() {
               autoComplete="email"
             />
           </div>
-          <div>
-            <label className="label" htmlFor="ob-phone">
-              Phone <span className="font-normal text-white/40">· optional</span>
-            </label>
-            <input
-              id="ob-phone"
-              type="tel"
-              className="input"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="(801) 555-0123"
-              autoComplete="tel"
-            />
-          </div>
+          {/* Phone is fully optional — hidden behind a toggle to keep sign-up to name + email. */}
+          {!showPhone ? (
+            <button
+              type="button"
+              onClick={() => setShowPhone(true)}
+              className="flex w-full items-center gap-2 rounded-xl border border-dashed border-white/15 px-3.5 py-2.5 text-left text-sm text-white/60 transition hover:border-white/30 hover:text-white/80"
+            >
+              <Plus width={15} height={15} className="text-lime" />
+              Add phone for text reminders
+              <span className="ml-auto text-xs text-white/35">optional</span>
+            </button>
+          ) : (
+            <div>
+              <div className="mb-1.5 flex items-center justify-between">
+                <label className="label mb-0" htmlFor="ob-phone">
+                  Phone <span className="font-normal text-white/40">· optional</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPhone(false);
+                    setPhone("");
+                    setSmsOptIn(false);
+                  }}
+                  className="text-xs text-white/40 hover:text-white/70"
+                >
+                  remove
+                </button>
+              </div>
+              <input
+                id="ob-phone"
+                type="tel"
+                className="input"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="(801) 555-0123"
+                autoComplete="tel"
+                autoFocus
+              />
+            </div>
+          )}
 
           <div className="space-y-2 pt-1">
             <Checkbox
@@ -175,7 +204,7 @@ export function OnboardingModal() {
               title="Email my confirmations & reminders"
               desc="A calendar invite per session, plus a morning-of agenda. Unsubscribe anytime."
             />
-            {phone.trim() && (
+            {showPhone && phone.trim() && (
               <Checkbox
                 checked={smsOptIn}
                 onChange={setSmsOptIn}
