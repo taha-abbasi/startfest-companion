@@ -11,6 +11,7 @@ import { Lounge } from "@/components/Lounge";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { AttendeesModal } from "@/components/AttendeesModal";
 import { SessionChatModal } from "@/components/SessionChatModal";
+import { SessionNotes } from "@/components/SessionNotes";
 import { DonateModal } from "@/components/DonateModal";
 import { MeetTheMaker } from "@/components/MeetTheMaker";
 import { Toasts } from "@/components/Toasts";
@@ -50,6 +51,7 @@ function Body() {
       <OnboardingModal />
       <AttendeesModal />
       <SessionChatModal />
+      <SessionNotes />
       <DonateModal />
       <Toasts />
     </>

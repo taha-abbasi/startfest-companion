@@ -71,6 +71,10 @@ interface AppCtx {
   openChat: (id: string) => void;
   closeChat: () => void;
 
+  notesSessionId: string | null;
+  openNotes: (id: string) => void;
+  closeNotes: () => void;
+
   donateOpen: boolean;
   openDonate: () => void;
   closeDonate: () => void;
@@ -121,6 +125,7 @@ export function AppProvider({
   const [onboarding, setOnboarding] = useState<OnboardingState>({ open: false, pendingSessionId: null });
   const [attendeesFor, setAttendeesFor] = useState<string | null>(null);
   const [chatSessionId, setChatSessionId] = useState<string | null>(null);
+  const [notesSessionId, setNotesSessionId] = useState<string | null>(null);
   const [donateOpen, setDonateOpen] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
@@ -297,6 +302,11 @@ export function AppProvider({
     setChatSessionId(id);
   }, []);
   const closeChat = useCallback(() => setChatSessionId(null), []);
+  const openNotes = useCallback((id: string) => {
+    setAttendeesFor(null);
+    setNotesSessionId(id);
+  }, []);
+  const closeNotes = useCallback(() => setNotesSessionId(null), []);
   const openDonate = useCallback(() => setDonateOpen(true), []);
   const closeDonate = useCallback(() => setDonateOpen(false), []);
 
@@ -323,6 +333,9 @@ export function AppProvider({
     chatSessionId,
     openChat,
     closeChat,
+    notesSessionId,
+    openNotes,
+    closeNotes,
     donateOpen,
     openDonate,
     closeDonate,

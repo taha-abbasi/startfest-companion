@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useApp } from "@/components/store";
 import { getSession, formatTimeRange, ROOMS, TRACKS } from "@/data/schedule";
-import { X, Users, Plus, Check, MessageCircle } from "@/components/icons";
+import { X, Users, Plus, Check, MessageCircle, Mic } from "@/components/icons";
 
 interface AttData {
   total: number;
@@ -19,7 +19,7 @@ function initials(name: string): string {
 const AVATAR_BG = ["#c6f23e", "#19c9b6", "#4fb8f0", "#8b7bf0", "#c06af0", "#ec5b9e", "#f59e6b"];
 
 export function AttendeesModal() {
-  const { attendeesFor, closeAttendees, isGoing, toggle, busyId, openChat } = useApp();
+  const { attendeesFor, closeAttendees, isGoing, toggle, busyId, openChat, openNotes } = useApp();
   const [data, setData] = useState<AttData | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -134,9 +134,14 @@ export function AttendeesModal() {
               {going ? <Check width={18} height={18} /> : <Plus width={18} height={18} />}
               {going ? "You're going — tap to remove" : "Add me to this session"}
             </button>
-            <button onClick={() => openChat(session.id)} className="btn-ghost w-full py-3">
-              <MessageCircle width={17} height={17} /> Open chat &amp; notes
-            </button>
+            <div className="flex gap-2">
+              <button onClick={() => openChat(session.id)} className="btn-ghost flex-1 py-3">
+                <MessageCircle width={17} height={17} /> Chat
+              </button>
+              <button onClick={() => openNotes(session.id)} className="btn-ghost flex-1 py-3">
+                <Mic width={17} height={17} /> Record &amp; notes
+              </button>
+            </div>
           </div>
         </div>
       </div>
