@@ -2,14 +2,30 @@
 
 import React from "react";
 import { BRAND } from "@/lib/brand";
+import { useApp } from "@/components/store";
 import { ArrowRight, Sparkle } from "@/components/icons";
 
 const REPO_URL = "https://github.com/taha-abbasi/startfest-companion";
 
 export function Footer() {
+  const { openDonate } = useApp();
   return (
     <footer className="px-4 pb-32 pt-8">
       <div className="mx-auto max-w-4xl">
+        {/* Support / donate */}
+        <button
+          onClick={openDonate}
+          className="mb-3 flex w-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-left transition hover:border-lime/40 hover:bg-white/[0.06]"
+        >
+          <span>
+            <span className="block text-sm font-bold text-white">Enjoying the app? Support {BRAND.donateBeneficiary} ♥</span>
+            <span className="mt-0.5 block text-[13px] text-white/55">
+              Chip in via Venmo — 100% goes to the program.
+            </span>
+          </span>
+          <span className="btn-lime shrink-0">Donate</span>
+        </button>
+
         {/* Lead-gen: Powered by AskFlorence */}
         <a
           href={BRAND.sponsorUrl}

@@ -91,3 +91,24 @@ export const Bolt = (p: P) => (
     <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z" />
   </svg>
 );
+export const MessageCircle = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+  </svg>
+);
+export const Bookmark = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z" />
+  </svg>
+);
+export const Send = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M22 2 11 13" />
+    <path d="M22 2 15 22l-4-9-9-4Z" />
+  </svg>
+);
+export const Trash = (p: P) => (
+  <svg {...base(p)}>
+    <path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+  </svg>
+);

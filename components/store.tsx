@@ -29,7 +29,7 @@ export interface IdentifyPayload {
   showPublicly: boolean;
 }
 
-type View = "schedule" | "agenda";
+type View = "schedule" | "agenda" | "lounge";
 
 export interface Toast {
   id: number;
@@ -66,6 +66,14 @@ interface AppCtx {
   attendeesFor: string | null;
   openAttendees: (id: string) => void;
   closeAttendees: () => void;
+
+  chatSessionId: string | null;
+  openChat: (id: string) => void;
+  closeChat: () => void;
+
+  donateOpen: boolean;
+  openDonate: () => void;
+  closeDonate: () => void;
 
   toasts: Toast[];
   pushToast: (text: string, tone?: Toast["tone"]) => void;
@@ -112,6 +120,8 @@ export function AppProvider({
   const [busyId, setBusyId] = useState<string | null>(null);
   const [onboarding, setOnboarding] = useState<OnboardingState>({ open: false, pendingSessionId: null });
   const [attendeesFor, setAttendeesFor] = useState<string | null>(null);
+  const [chatSessionId, setChatSessionId] = useState<string | null>(null);
+  const [donateOpen, setDonateOpen] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const toastSeq = useRef(0);
@@ -282,6 +292,13 @@ export function AppProvider({
 
   const openAttendees = useCallback((id: string) => setAttendeesFor(id), []);
   const closeAttendees = useCallback(() => setAttendeesFor(null), []);
+  const openChat = useCallback((id: string) => {
+    setAttendeesFor(null);
+    setChatSessionId(id);
+  }, []);
+  const closeChat = useCallback(() => setChatSessionId(null), []);
+  const openDonate = useCallback(() => setDonateOpen(true), []);
+  const closeDonate = useCallback(() => setDonateOpen(false), []);
 
   const value: AppCtx = {
     attendee,
@@ -303,6 +320,12 @@ export function AppProvider({
     attendeesFor,
     openAttendees,
     closeAttendees,
+    chatSessionId,
+    openChat,
+    closeChat,
+    donateOpen,
+    openDonate,
+    closeDonate,
     toasts,
     pushToast,
     dismissToast,

@@ -7,8 +7,11 @@ import { Footer } from "@/components/Footer";
 import { BottomNav } from "@/components/BottomNav";
 import { ScheduleView } from "@/components/ScheduleView";
 import { MyAgenda } from "@/components/MyAgenda";
+import { Lounge } from "@/components/Lounge";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { AttendeesModal } from "@/components/AttendeesModal";
+import { SessionChatModal } from "@/components/SessionChatModal";
+import { DonateModal } from "@/components/DonateModal";
 import { MeetTheMaker } from "@/components/MeetTheMaker";
 import { Toasts } from "@/components/Toasts";
 
@@ -35,13 +38,19 @@ function Body() {
     <>
       <Header />
       <main className="px-4 pt-6">
-        <div className="mx-auto max-w-4xl">{view === "schedule" ? <ScheduleView /> : <MyAgenda />}</div>
+        <div className="mx-auto max-w-4xl">
+          {view === "schedule" && <ScheduleView />}
+          {view === "lounge" && <Lounge />}
+          {view === "agenda" && <MyAgenda />}
+        </div>
       </main>
-      <MeetTheMaker />
+      {view === "schedule" && <MeetTheMaker />}
       <Footer />
       <BottomNav />
       <OnboardingModal />
       <AttendeesModal />
+      <SessionChatModal />
+      <DonateModal />
       <Toasts />
     </>
   );

@@ -15,6 +15,10 @@ export const BRAND = {
     "Founders: the plan Healthcare.gov showed me for $960/mo was actually $7 with hidden ACA subsidies. AskFlorence finds your real price in seconds — free for consumers.",
   sponsorCta: "See your real price",
   sponsorUrl: process.env.NEXT_PUBLIC_ASKFLORENCE_URL || "https://askflorence.health",
+
+  // Donations → Startup School. Set NEXT_PUBLIC_VENMO_HANDLE to the real handle.
+  venmoHandle: process.env.NEXT_PUBLIC_VENMO_HANDLE || "SiliconSlopes",
+  donateBeneficiary: "Startup School",
 };
 
 export const CREDIT_LINE = `An app by ${BRAND.builder} (${BRAND.builderAlias})`;

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useApp } from "@/components/store";
-import { Calendar, Users } from "@/components/icons";
+import { Calendar, MessageCircle, Bookmark } from "@/components/icons";
 
 export function BottomNav() {
   const { view, setView, mySet } = useApp();
@@ -14,7 +14,7 @@ export function BottomNav() {
     icon,
     badge,
   }: {
-    id: "schedule" | "agenda";
+    id: "schedule" | "lounge" | "agenda";
     label: string;
     icon: React.ReactNode;
     badge?: number;
@@ -23,7 +23,7 @@ export function BottomNav() {
     return (
       <button
         onClick={() => setView(id)}
-        className={`relative flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition ${
+        className={`relative flex items-center gap-1.5 rounded-full px-3.5 py-2.5 text-sm font-bold transition sm:px-4 ${
           active ? "bg-lime text-navy-900" : "text-white/70 hover:text-white"
         }`}
       >
@@ -44,9 +44,10 @@ export function BottomNav() {
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-5 z-40 flex justify-center px-4">
-      <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-white/12 bg-[#0a1f4d]/90 p-1 shadow-2xl backdrop-blur-md">
-        <Tab id="schedule" label="Schedule" icon={<Users width={16} height={16} />} />
-        <Tab id="agenda" label="My Agenda" icon={<Calendar width={16} height={16} />} badge={count} />
+      <div className="pointer-events-auto flex items-center gap-0.5 rounded-full border border-white/12 bg-[#0a1f4d]/90 p-1 shadow-2xl backdrop-blur-md">
+        <Tab id="schedule" label="Schedule" icon={<Calendar width={16} height={16} />} />
+        <Tab id="lounge" label="Lounge" icon={<MessageCircle width={16} height={16} />} />
+        <Tab id="agenda" label="Agenda" icon={<Bookmark width={16} height={16} />} badge={count} />
       </div>
     </div>
   );

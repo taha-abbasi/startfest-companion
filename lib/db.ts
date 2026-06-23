@@ -1,4 +1,4 @@
-import { MongoClient, type Db, type Collection } from "mongodb";
+import { MongoClient, type Db, type Collection, type ObjectId } from "mongodb";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MongoDB connection — serverless-safe singleton.
@@ -89,17 +89,33 @@ export async function signups(): Promise<Collection<SignupDoc>> {
   return (await getDb()).collection<SignupDoc>(`${COLLECTION_PREFIX}signups`);
 }
 
+export interface MessageDoc {
+  _id?: ObjectId;
+  /** "general" for the conference lounge, or a sessionId for a session room */
+  room: string;
+  email: string;
+  name: string;
+  text: string;
+  createdAt: Date;
+}
+
+export async function messages(): Promise<Collection<MessageDoc>> {
+  return (await getDb()).collection<MessageDoc>(`${COLLECTION_PREFIX}messages`);
+}
+
 let indexesEnsured = false;
 
 /** Idempotently create indexes. Safe to call on every request (guarded). */
 export async function ensureIndexes(): Promise<void> {
   if (indexesEnsured) return;
-  const [a, s] = [await attendees(), await signups()];
+  const [a, s, m] = [await attendees(), await signups(), await messages()];
   await Promise.all([
     a.createIndex({ email: 1 }, { unique: true }),
     s.createIndex({ sessionId: 1, email: 1 }, { unique: true }),
     s.createIndex({ sessionId: 1 }),
     s.createIndex({ email: 1 }),
+    m.createIndex({ room: 1, _id: 1 }),
+    m.createIndex({ email: 1, createdAt: -1 }),
   ]);
   indexesEnsured = true;
 }
