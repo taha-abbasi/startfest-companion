@@ -19,7 +19,8 @@ export const BRAND = {
   // Donations → Startup School (Clint Betts collects on Venmo).
   venmoHandle: process.env.NEXT_PUBLIC_VENMO_HANDLE || "Clint-Betts",
   donateBeneficiary: "Startup School",
-  donateNote: "StartFest Pal ⚡ powered by AskFlorence",
+  // Venmo renders spaces in deep-linked notes as "+", so we use middots instead.
+  donateNote: "StartFest Pal ⚡ powered by AskFlorence".replace(/ /g, "·"),
 };
 
 export const CREDIT_LINE = `An app by ${BRAND.builder} (${BRAND.builderAlias})`;
