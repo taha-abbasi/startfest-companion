@@ -6,7 +6,7 @@ going, catch time conflicts, and get a calendar reminder before every session â€
 account, no app install.
 
 > An independent, open-source community tool. Built by **Taha Salahuddin Abbasi**
-> _(The Brown Cowboy)_ â€” a Koolas app, powered by [AskFlorence](https://askflorence.health).
+> _(The Brown Cowboy)_, powered by [AskFlorence](https://askflorence.health).
 
 ---
 

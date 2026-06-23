@@ -2,7 +2,7 @@
   "name": "startfest-companion",
   "version": "1.0.0",
   "private": true,
-  "description": "StartFest 2026 conference companion — browse the agenda, build your schedule, see who's going. A Koolas app, powered by AskFlorence.",
+  "description": "StartFest 2026 conference companion — browse the agenda, build your schedule, see who's going. An app by Taha Salahuddin Abbasi, powered by AskFlorence.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

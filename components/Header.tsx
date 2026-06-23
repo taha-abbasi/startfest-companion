@@ -16,7 +16,7 @@ function Logo() {
 }
 
 export function Header() {
-  const { attendee, openOnboarding, editProfile } = useApp();
+  const { attendee, openOnboarding, editProfile, attendeeCount, goingTotal } = useApp();
 
   return (
     <header className="px-4 pt-5">
@@ -80,6 +80,25 @@ export function Header() {
             <MapPin width={13} height={13} />
             <span>{CONFERENCE.venue}</span>
           </div>
+
+          {attendeeCount > 0 && (
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-lime/25 bg-lime/[0.08] py-1.5 pl-3 pr-4 text-[13px]">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-lime" />
+              </span>
+              <span className="font-semibold text-white">
+                {attendeeCount.toLocaleString()} {attendeeCount === 1 ? "Sloper" : "Slopers"}
+              </span>
+              <span className="text-white/55">on the app</span>
+              {goingTotal > 0 && (
+                <>
+                  <span className="text-white/25">·</span>
+                  <span className="text-white/55">{goingTotal.toLocaleString()} sessions saved</span>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>

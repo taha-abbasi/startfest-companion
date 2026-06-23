@@ -11,11 +11,13 @@ async function loadInitial(): Promise<{
   sessionIds: string[];
   counts: Record<string, number>;
   feedToken: string | null;
+  attendeeCount: number;
 }> {
   let attendee: Attendee | null = null;
   let sessionIds: string[] = [];
   let counts: Record<string, number> = {};
   let feedToken: string | null = null;
+  let attendeeCount = 0;
 
   try {
     const email = getIdentityEmail();
@@ -36,26 +38,31 @@ async function loadInitial(): Promise<{
       }
     }
 
-    const rows = await (await signups())
-      .aggregate<{ _id: string; n: number }>([{ $group: { _id: "$sessionId", n: { $sum: 1 } } }])
-      .toArray();
+    const [rows, n] = await Promise.all([
+      (await signups())
+        .aggregate<{ _id: string; n: number }>([{ $group: { _id: "$sessionId", n: { $sum: 1 } } }])
+        .toArray(),
+      (await attendees()).estimatedDocumentCount(),
+    ]);
     for (const r of rows) counts[r._id] = r.n;
+    attendeeCount = n;
   } catch (e) {
     // DB unavailable — render the public agenda anyway with zeroed live data.
     console.error("[page] initial load failed:", e);
   }
 
-  return { attendee, sessionIds, counts, feedToken };
+  return { attendee, sessionIds, counts, feedToken, attendeeCount };
 }
 
 export default async function Page() {
-  const { attendee, sessionIds, counts, feedToken } = await loadInitial();
+  const { attendee, sessionIds, counts, feedToken, attendeeCount } = await loadInitial();
   return (
     <AppClient
       initialAttendee={attendee}
       initialSessionIds={sessionIds}
       initialCounts={counts}
       initialFeedToken={feedToken}
+      initialAttendeeCount={attendeeCount}
     />
   );
 }

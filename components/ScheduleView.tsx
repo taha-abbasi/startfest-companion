@@ -12,6 +12,7 @@ import {
   ROOMS,
 } from "@/data/schedule";
 import { SessionCard } from "@/components/SessionCard";
+import { PopularSessions } from "@/components/PopularSessions";
 import { useApp } from "@/components/store";
 import { useNow } from "@/components/useNow";
 
@@ -152,6 +153,9 @@ export function ScheduleView() {
           })}
         </div>
       </div>
+
+      {/* Trending across both days */}
+      <PopularSessions />
 
       {/* Day summary */}
       <div className="mb-4 flex items-center justify-between px-1 text-sm">

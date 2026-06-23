@@ -2,7 +2,6 @@
 
 export const BRAND = {
   appName: "StartFest Companion",
-  maker: "Koolas",
   builder: "Taha Salahuddin Abbasi",
   builderAlias: "The Brown Cowboy",
   builderUrl: "https://tahaabbasi.com",
@@ -15,4 +14,4 @@ export const BRAND = {
   sponsorUrl: process.env.NEXT_PUBLIC_ASKFLORENCE_URL || "https://askflorence.health",
 };
 
-export const CREDIT_LINE = `Built by ${BRAND.builder} (${BRAND.builderAlias}) · A ${BRAND.maker} app`;
+export const CREDIT_LINE = `An app by ${BRAND.builder} (${BRAND.builderAlias})`;

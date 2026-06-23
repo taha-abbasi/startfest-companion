@@ -50,11 +50,13 @@ export function AppClient({
   initialSessionIds,
   initialCounts,
   initialFeedToken = null,
+  initialAttendeeCount = 0,
 }: {
   initialAttendee: Attendee | null;
   initialSessionIds: string[];
   initialCounts: Record<string, number>;
   initialFeedToken?: string | null;
+  initialAttendeeCount?: number;
 }) {
   return (
     <AppProvider
@@ -62,6 +64,7 @@ export function AppClient({
       initialSessionIds={initialSessionIds}
       initialCounts={initialCounts}
       initialFeedToken={initialFeedToken}
+      initialAttendeeCount={initialAttendeeCount}
     >
       <Body />
     </AppProvider>

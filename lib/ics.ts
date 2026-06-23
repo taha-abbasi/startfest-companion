@@ -64,7 +64,7 @@ export function buildIcs(sessions: Session[], baseUrl = ""): string {
   const cal = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Koolas//StartFest Companion//EN",
+    "PRODID:-//StartFest Companion//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     `X-WR-CALNAME:${esc(`${CONFERENCE.name} ${CONFERENCE.edition}`)}`,

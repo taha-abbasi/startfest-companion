@@ -32,11 +32,11 @@ export function Footer() {
         {/* Credits */}
         <div className="mt-6 flex flex-col gap-2 text-[13px] text-white/45 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            Built by{" "}
+            An app by{" "}
             <a href={BRAND.builderUrl} target="_blank" rel="noopener" className="font-semibold text-white/70 hover:text-lime">
               {BRAND.builder}
             </a>{" "}
-            <span className="text-white/35">({BRAND.builderAlias})</span> · A {BRAND.maker} app
+            <span className="text-white/35">({BRAND.builderAlias})</span>
           </div>
           <div className="flex items-center gap-3">
             <a href={REPO_URL} target="_blank" rel="noopener" className="hover:text-white/70">

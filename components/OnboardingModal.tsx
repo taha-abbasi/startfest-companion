@@ -202,7 +202,7 @@ export function OnboardingModal() {
 
           <p className="pt-1 text-center text-[11px] leading-relaxed text-white/40">
             By continuing you agree we can email you about sessions you add. We never sell your data.
-            <br />A {BRAND.maker} app · Powered by {BRAND.sponsorName}.
+            <br />An app by {BRAND.builder} · Powered by {BRAND.sponsorName}.
           </p>
         </form>
       </div>

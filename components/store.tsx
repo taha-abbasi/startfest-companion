@@ -71,6 +71,9 @@ interface AppCtx {
   pushToast: (text: string, tone?: Toast["tone"]) => void;
   dismissToast: (id: number) => void;
 
+  attendeeCount: number;
+  goingTotal: number;
+
   refreshCounts: () => void;
 }
 
@@ -87,18 +90,24 @@ export function AppProvider({
   initialSessionIds,
   initialCounts,
   initialFeedToken = null,
+  initialAttendeeCount = 0,
   children,
 }: {
   initialAttendee: Attendee | null;
   initialSessionIds: string[];
   initialCounts: Record<string, number>;
   initialFeedToken?: string | null;
+  initialAttendeeCount?: number;
   children: React.ReactNode;
 }) {
   const [attendee, setAttendee] = useState<Attendee | null>(initialAttendee);
   const [mySet, setMySet] = useState<Set<string>>(new Set(initialSessionIds));
   const [counts, setCounts] = useState<Record<string, number>>(initialCounts);
   const [feedToken, setFeedToken] = useState<string | null>(initialFeedToken);
+  const [attendeeCount, setAttendeeCount] = useState<number>(initialAttendeeCount);
+  const [goingTotal, setGoingTotal] = useState<number>(() =>
+    Object.values(initialCounts).reduce((a, b) => a + b, 0)
+  );
   const [view, setView] = useState<View>("schedule");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [onboarding, setOnboarding] = useState<OnboardingState>({ open: false, pendingSessionId: null });
@@ -126,6 +135,8 @@ export function AppProvider({
       if (!r.ok) return;
       const data = await r.json();
       if (data?.counts) setCounts(data.counts);
+      if (typeof data?.attendees === "number") setAttendeeCount(data.attendees);
+      if (typeof data?.going === "number") setGoingTotal(data.going);
     } catch {
       /* offline; keep last known */
     }
@@ -154,6 +165,7 @@ export function AppProvider({
         return next;
       });
       setCounts((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] ?? 0) + (wasGoing ? -1 : 1)) }));
+      setGoingTotal((g) => Math.max(0, g + (wasGoing ? -1 : 1)));
 
       try {
         let res: Response;
@@ -174,6 +186,8 @@ export function AppProvider({
             else next.delete(id);
             return next;
           });
+          setCounts((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] ?? 0) + (wasGoing ? 1 : -1)) }));
+          setGoingTotal((g) => Math.max(0, g + (wasGoing ? 1 : -1)));
           openOnboarding(id);
           return;
         }
@@ -207,6 +221,7 @@ export function AppProvider({
           return next;
         });
         setCounts((prev) => ({ ...prev, [id]: Math.max(0, (prev[id] ?? 0) + (wasGoing ? 1 : -1)) }));
+        setGoingTotal((g) => Math.max(0, g + (wasGoing ? 1 : -1)));
         pushToast("Something went wrong. Please try again.", "error");
       } finally {
         setBusyId(null);
@@ -255,12 +270,14 @@ export function AppProvider({
           // sign them up for what they were trying to add
           setTimeout(() => doSignup(pending), 150);
         }
+        // pick up the updated community headcount (new Sloper just joined)
+        refreshCounts();
         return { ok: true };
       } catch {
         return { ok: false, error: "Network error. Please try again." };
       }
     },
-    [onboarding.pendingSessionId, closeOnboarding, pushToast, doSignup]
+    [onboarding.pendingSessionId, closeOnboarding, pushToast, doSignup, refreshCounts]
   );
 
   const openAttendees = useCallback((id: string) => setAttendeesFor(id), []);
@@ -289,6 +306,8 @@ export function AppProvider({
     toasts,
     pushToast,
     dismissToast,
+    attendeeCount,
+    goingTotal,
     refreshCounts,
   };
 

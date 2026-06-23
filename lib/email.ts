@@ -61,7 +61,7 @@ function layout(opts: { preheader: string; heading: string; body: string; unsubU
   <tr><td style="padding:18px 28px 26px;border-top:1px solid ${C.border};">
     <div style="font-size:12px;color:${C.slate};line-height:1.6;">
       You're receiving this because you added a session to your schedule on the StartFest Companion.<br>
-      ${BRAND.appName} · Built by ${BRAND.builder} (${BRAND.builderAlias}) · A ${BRAND.maker} app.<br>
+      ${BRAND.appName} · An app by ${BRAND.builder} (${BRAND.builderAlias}).<br>
       <a href="${opts.unsubUrl}" style="color:${C.slate};text-decoration:underline;">Unsubscribe from all StartFest email</a>
     </div>
   </td></tr>
