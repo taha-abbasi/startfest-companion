@@ -107,12 +107,46 @@ export async function messages(): Promise<Collection<MessageDoc>> {
   return (await getDb()).collection<MessageDoc>(`${COLLECTION_PREFIX}messages`);
 }
 
+export interface Highlights {
+  tldr: string;
+  keyPoints: string[];
+  actionItems: string[];
+  quotes: string[];
+  resources: string[];
+}
+
+/** One attendee's shared notes for a session. */
+export interface NoteShareDoc {
+  _id?: ObjectId;
+  sessionId: string;
+  email: string;
+  name: string;
+  highlights: Highlights;
+  createdAt: Date;
+}
+
+/** The combined, deduplicated summary for a session (one per session). */
+export interface NoteSummaryDoc {
+  _id: string; // sessionId
+  summary: Highlights;
+  contributors: string[];
+  count: number;
+  updatedAt: Date;
+}
+
+export async function noteShares(): Promise<Collection<NoteShareDoc>> {
+  return (await getDb()).collection<NoteShareDoc>(`${COLLECTION_PREFIX}note_shares`);
+}
+export async function noteSummaries(): Promise<Collection<NoteSummaryDoc>> {
+  return (await getDb()).collection<NoteSummaryDoc>(`${COLLECTION_PREFIX}note_summaries`);
+}
+
 let indexesEnsured = false;
 
 /** Idempotently create indexes. Safe to call on every request (guarded). */
 export async function ensureIndexes(): Promise<void> {
   if (indexesEnsured) return;
-  const [a, s, m] = [await attendees(), await signups(), await messages()];
+  const [a, s, m, ns] = [await attendees(), await signups(), await messages(), await noteShares()];
   await Promise.all([
     a.createIndex({ email: 1 }, { unique: true }),
     s.createIndex({ sessionId: 1, email: 1 }, { unique: true }),
@@ -120,6 +154,8 @@ export async function ensureIndexes(): Promise<void> {
     s.createIndex({ email: 1 }),
     m.createIndex({ room: 1, _id: 1 }),
     m.createIndex({ email: 1, createdAt: -1 }),
+    ns.createIndex({ sessionId: 1, email: 1 }, { unique: true }),
+    ns.createIndex({ sessionId: 1 }),
   ]);
   indexesEnsured = true;
 }

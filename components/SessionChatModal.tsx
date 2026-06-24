@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useApp } from "@/components/store";
 import { getSession, formatTimeRange, ROOMS, TRACKS } from "@/data/schedule";
 import { ChatPanel } from "@/components/ChatPanel";
+import { SessionSummary } from "@/components/SessionSummary";
 import { X } from "@/components/icons";
 
 export function SessionChatModal() {
@@ -47,11 +48,12 @@ export function SessionChatModal() {
             <X width={20} height={20} />
           </button>
         </div>
-        <div className="flex-1 px-3 pb-3">
+        <div className="flex-1 space-y-3 overflow-y-auto px-3 pb-3">
+          <SessionSummary sessionId={session.id} />
           <ChatPanel
             room={session.id}
             placeholder="Share a note, link, or question…"
-            heightClass="h-[64vh]"
+            heightClass="h-[58vh]"
           />
         </div>
       </div>

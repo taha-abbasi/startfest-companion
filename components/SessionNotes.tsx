@@ -16,7 +16,8 @@ import {
   type NotesDoc,
   type PhotoRec,
 } from "@/lib/notesDb";
-import { X, Mic, Square, Camera, Sparkle, Trash, Copy, Check } from "@/components/icons";
+import { X, Mic, Square, Camera, Sparkle, Trash, Copy, Check, Users, Warn } from "@/components/icons";
+import { SessionSummary } from "@/components/SessionSummary";
 
 const SEGMENT_MS = 25000;
 
@@ -61,6 +62,10 @@ export function SessionNotes() {
   const [micError, setMicError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [supported, setSupported] = useState(true);
+  const [atCapacity, setAtCapacity] = useState(false);
+  const [sharing, setSharing] = useState(false);
+  const [shared, setShared] = useState(false);
+  const [summaryReload, setSummaryReload] = useState(0);
 
   const streamRef = useRef<MediaStream | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
@@ -118,12 +123,19 @@ export function SessionNotes() {
           openOnboarding(null);
           break;
         }
+        if (res.status === 429) {
+          // transcription is at capacity — keep the chunk queued, retry later,
+          // and tell the user (their audio is safe; a slot will free up).
+          setAtCapacity(true);
+          break;
+        }
         if (!res.ok) {
           // server/STT hiccup — keep chunk, retry later
           setOffline(res.status === 502 ? false : offline);
           break;
         }
         setOffline(false);
+        setAtCapacity(false);
         const data = await res.json();
         const segs: Segment[] = (data.segments ?? []).map((s: Segment) => ({
           speaker: s.speaker,
@@ -293,11 +305,37 @@ export function SessionNotes() {
       if (!r.ok) throw new Error();
       const d = await r.json();
       setSummary(d.highlights);
+      setShared(false);
       persist({ summary: d.highlights });
     } catch {
       pushToast("Couldn't generate highlights — try again in a moment.", "error");
     } finally {
       setSummarizing(false);
+    }
+  };
+
+  // Contribute this summary to the shared, combined session summary everyone can see.
+  const shareToSession = async () => {
+    if (!sessionId || !summary || sharing) return;
+    setSharing(true);
+    try {
+      const r = await fetch("/api/session-summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, highlights: summary, name: attendee?.name }),
+      });
+      if (r.status === 401) {
+        openOnboarding(null);
+        return;
+      }
+      if (!r.ok) throw new Error();
+      setShared(true);
+      setSummaryReload((n) => n + 1);
+      pushToast("Shared with the session — thanks for helping everyone! 🙌", "success");
+    } catch {
+      pushToast("Couldn't share right now — try again in a moment.", "error");
+    } finally {
+      setSharing(false);
     }
   };
 
@@ -426,8 +464,37 @@ export function SessionNotes() {
           )}
         </div>
 
+        {/* At-capacity notice — graceful fallback */}
+        {atCapacity && (
+          <div className="border-b border-amber-400/20 bg-amber-500/10 px-4 py-3">
+            <div className="flex items-start gap-2">
+              <Warn width={16} height={16} className="mt-0.5 shrink-0 text-amber-300" />
+              <div className="text-xs leading-relaxed text-amber-100/90">
+                <span className="font-semibold">Live transcription is at capacity right now.</span> Your audio
+                is still being captured and will transcribe as soon as a slot frees — nothing is lost. Others in
+                this room are recording too, and a <span className="font-semibold">combined summary</span> is
+                shared below. If you get a transcript, please tap <span className="font-semibold">Share</span> to
+                help everyone.
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* body */}
         <div className="flex-1 overflow-y-auto p-4">
+          {/* Combined summary from everyone recording this session */}
+          <div className="mb-4">
+            <SessionSummary
+              sessionId={sessionId}
+              reloadToken={summaryReload}
+              emptyHint={
+                atCapacity
+                  ? "No shared summary yet — it'll appear here as soon as someone shares theirs."
+                  : undefined
+              }
+            />
+          </div>
+
           {/* photos */}
           {photos.length > 0 && (
             <div className="mb-4">
@@ -526,18 +593,30 @@ export function SessionNotes() {
         </div>
 
         {/* footer actions */}
-        <div className="flex items-center gap-2 border-t border-white/10 p-3">
-          <button
-            onClick={generateSummary}
-            disabled={summarizing || transcriptText.length < 40}
-            className="btn-lime flex-1 py-2.5"
-          >
-            <Sparkle width={16} height={16} />
-            {summarizing ? "Thinking…" : summary ? "Regenerate highlights" : "Generate highlights"}
-          </button>
-          <button onClick={copyNotes} className="btn-ghost py-2.5" title="Copy notes">
-            {copied ? <Check width={16} height={16} /> : <Copy width={16} height={16} />}
-          </button>
+        <div className="space-y-2 border-t border-white/10 p-3">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={generateSummary}
+              disabled={summarizing || transcriptText.length < 40}
+              className="btn-lime flex-1 py-2.5"
+            >
+              <Sparkle width={16} height={16} />
+              {summarizing ? "Thinking…" : summary ? "Regenerate highlights" : "Generate highlights"}
+            </button>
+            <button onClick={copyNotes} className="btn-ghost py-2.5" title="Copy notes">
+              {copied ? <Check width={16} height={16} /> : <Copy width={16} height={16} />}
+            </button>
+          </div>
+          {summary && (
+            <button
+              onClick={shareToSession}
+              disabled={sharing || shared}
+              className="btn-going w-full py-2.5"
+            >
+              <Users width={16} height={16} />
+              {shared ? "Shared with the session ✓" : sharing ? "Sharing…" : "Share with this session"}
+            </button>
+          )}
         </div>
         <p className="px-4 pb-3 text-center text-[10px] leading-relaxed text-white/30">
           Audio is sent securely for transcription, then discarded. Photos &amp; transcript stay on your device.

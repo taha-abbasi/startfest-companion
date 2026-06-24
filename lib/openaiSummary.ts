@@ -8,6 +8,56 @@ export interface Highlights {
   resources: string[];
 }
 
+async function chatJSON(system: string, user: string): Promise<Partial<Highlights>> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error("OPENAI_API_KEY is not configured.");
+  const r = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "gpt-4o-mini",
+      temperature: 0.3,
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: user },
+      ],
+    }),
+  });
+  if (!r.ok) {
+    const t = await r.text().catch(() => "");
+    throw new Error(`openai_failed_${r.status}_${t.slice(0, 120)}`);
+  }
+  const data = await r.json();
+  try {
+    return JSON.parse(data.choices?.[0]?.message?.content ?? "{}");
+  } catch {
+    return {};
+  }
+}
+
+function coerce(parsed: Partial<Highlights>): Highlights {
+  return {
+    tldr: typeof parsed.tldr === "string" ? parsed.tldr : "",
+    keyPoints: Array.isArray(parsed.keyPoints) ? parsed.keyPoints.map(String) : [],
+    actionItems: Array.isArray(parsed.actionItems) ? parsed.actionItems.map(String) : [],
+    quotes: Array.isArray(parsed.quotes) ? parsed.quotes.map(String) : [],
+    resources: Array.isArray(parsed.resources) ? parsed.resources.map(String) : [],
+  };
+}
+
+/** Merge several attendees' summaries of the SAME session into one deduplicated summary. */
+export async function mergeSummaries(
+  items: Highlights[],
+  ctx: { title?: string; speaker?: string }
+): Promise<Highlights> {
+  if (items.length === 1) return coerce(items[0]);
+  const system =
+    "You merge multiple attendees' notes from the SAME conference talk into ONE clean, deduplicated summary. Combine overlapping points into single bullets, keep every distinct insight, and remove repetition. Be concise and faithful — never invent anything not present in the inputs. Respond ONLY as JSON: tldr (string), keyPoints (string[]), actionItems (string[]), quotes (string[]), resources (string[]).";
+  const user = `Session: ${ctx.title || "Unknown"}\nSpeaker(s): ${ctx.speaker || "Unknown"}\n\nAttendee summaries to merge (JSON array):\n${JSON.stringify(items).slice(0, 24000)}`;
+  return coerce(await chatJSON(system, user));
+}
+
 export async function summarize(
   transcript: string,
   ctx: { title?: string; speaker?: string }

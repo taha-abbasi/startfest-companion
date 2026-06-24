@@ -48,7 +48,13 @@ export async function POST(req: Request) {
   } catch (e) {
     const msg = e instanceof Error ? e.message : "transcribe_failed";
     console.error("[transcribe]", msg);
-    // 502 so the client keeps the chunk queued and retries.
+    // Concurrency/capacity from ElevenLabs → 429 so the client shows the
+    // "at capacity" state and steers people to the shared session summary.
+    // The chunk stays queued and retries, so nothing is lost when a slot frees.
+    if (/_429|_503|too_many|system_busy|concurrent/i.test(msg)) {
+      return NextResponse.json({ error: "at_capacity" }, { status: 429 });
+    }
+    // Other errors: 502 so the client keeps the chunk queued and retries.
     return NextResponse.json({ error: msg }, { status: 502 });
   }
 }
