@@ -41,7 +41,7 @@ export function ChatPanel({
   placeholder?: string;
   heightClass?: string;
 }) {
-  const { attendee, openOnboarding, pushToast } = useApp();
+  const { attendee, openOnboarding, pushToast, markRead } = useApp();
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -78,6 +78,7 @@ export function ChatPanel({
         const list: Msg[] = d.messages ?? [];
         setMsgs(list);
         if (list.length) lastId.current = list[list.length - 1].id;
+        markRead(room, lastId.current); // opening the room = caught up
         setOffline(false);
       })
       .catch(() => active && setOffline(true))
@@ -90,7 +91,7 @@ export function ChatPanel({
     return () => {
       active = false;
     };
-  }, [room, scrollToBottom]);
+  }, [room, scrollToBottom, markRead]);
 
   // poll for new messages
   useEffect(() => {
@@ -103,6 +104,7 @@ export function ChatPanel({
         if (!r.ok) throw new Error();
         const d = await r.json();
         merge(d.messages ?? []);
+        markRead(room, lastId.current); // panel is open → stay caught up
         setOffline(false);
       } catch {
         setOffline(true);
@@ -116,7 +118,7 @@ export function ChatPanel({
       clearInterval(iv);
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, [room, merge]);
+  }, [room, merge, markRead]);
 
   // autoscroll on new messages if user is near the bottom
   useEffect(() => {

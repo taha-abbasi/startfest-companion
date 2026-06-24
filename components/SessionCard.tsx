@@ -23,7 +23,7 @@ function hexToRgba(hex: string, a: number): string {
 }
 
 export function SessionCard({ session, now }: { session: Session; now: number }) {
-  const { isGoing, countFor, toggle, busyId, openAttendees, openChat, openNotes, conflictIds } = useApp();
+  const { isGoing, countFor, toggle, busyId, openAttendees, openChat, openNotes, conflictIds, unreadFor } = useApp();
   const track = TRACKS[session.track];
   const room = ROOMS[session.room];
   const going = isGoing(session.id);
@@ -126,6 +126,11 @@ export function SessionCard({ session, now }: { session: Session; now: number })
             className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold text-white/60 transition hover:bg-white/5 hover:text-white"
           >
             <MessageCircle width={14} height={14} /> Chat &amp; notes
+            {unreadFor(session.id) > 0 && (
+              <span className="inline-flex h-[17px] min-w-[17px] items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-extrabold text-white">
+                {unreadFor(session.id) > 9 ? "9+" : unreadFor(session.id)}
+              </span>
+            )}
           </button>
           <button
             onClick={() => openNotes(session.id)}

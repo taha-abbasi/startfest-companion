@@ -96,6 +96,9 @@ interface AppCtx {
   attendeeCount: number;
   goingTotal: number;
 
+  unreadFor: (room: string) => number;
+  markRead: (room: string, lastId: string | null) => void;
+
   refreshCounts: () => void;
 }
 
@@ -130,6 +133,7 @@ export function AppProvider({
   const [goingTotal, setGoingTotal] = useState<number>(() =>
     Object.values(initialCounts).reduce((a, b) => a + b, 0)
   );
+  const [unread, setUnread] = useState<Record<string, number>>({});
   const [view, setView] = useState<View>("schedule");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [onboarding, setOnboarding] = useState<OnboardingState>({ open: false, pendingSessionId: null });
@@ -178,6 +182,56 @@ export function AppProvider({
       window.removeEventListener("focus", onFocus);
     };
   }, [refreshCounts]);
+
+  // ── Unread chat badges (last-read tracked per device) ──────────────────────
+  const unreadFor = useCallback((room: string) => unread[room] ?? 0, [unread]);
+
+  const markRead = useCallback((room: string, lastId: string | null) => {
+    if (lastId) {
+      try {
+        const raw = JSON.parse(localStorage.getItem("sf_lastread") || "{}");
+        raw[room] = lastId;
+        localStorage.setItem("sf_lastread", JSON.stringify(raw));
+      } catch {
+        /* localStorage unavailable */
+      }
+    }
+    setUnread((u) => (u[room] ? { ...u, [room]: 0 } : u));
+  }, []);
+
+  const refreshUnread = useCallback(async () => {
+    let lastRead: Record<string, string> = {};
+    try {
+      lastRead = JSON.parse(localStorage.getItem("sf_lastread") || "{}");
+    } catch {
+      /* ignore */
+    }
+    const rooms: Record<string, string | null> = { general: lastRead.general ?? null };
+    for (const id of mySet) rooms[id] = lastRead[id] ?? null;
+    try {
+      const r = await fetch("/api/chat/unread", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rooms }),
+      });
+      if (!r.ok) return;
+      const d = await r.json();
+      if (d?.unread) setUnread(d.unread);
+    } catch {
+      /* offline */
+    }
+  }, [mySet]);
+
+  useEffect(() => {
+    refreshUnread();
+    const iv = setInterval(refreshUnread, 20000);
+    const onFocus = () => refreshUnread();
+    window.addEventListener("focus", onFocus);
+    return () => {
+      clearInterval(iv);
+      window.removeEventListener("focus", onFocus);
+    };
+  }, [refreshUnread]);
 
   const doSignup = useCallback(
     async (id: string) => {
@@ -360,6 +414,8 @@ export function AppProvider({
     dismissToast,
     attendeeCount,
     goingTotal,
+    unreadFor,
+    markRead,
     refreshCounts,
   };
 
