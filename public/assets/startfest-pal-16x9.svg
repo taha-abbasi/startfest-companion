@@ -1,0 +1,86 @@
+<svg viewBox="0 0 1920 1080" width="1920" height="1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl desc" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <title id="ttl">StartFest Pal — your StartFest companion app</title>
+  <desc id="desc">Six features: up next and rooms, see who's going, spot what's popular, record and transcribe with AI highlights, chat with everyone via the Lounge and per-session chat, and the Slopers directory. Free at tinyurl.com/StartFestPal.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#061634"/><stop offset="0.4" stop-color="#082155"/>
+      <stop offset="0.75" stop-color="#0a346e"/><stop offset="1" stop-color="#0c5572"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#c6f23e" stop-opacity="0.16"/><stop offset="1" stop-color="#c6f23e" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="#ffffff" fill-opacity="0.05"/></pattern>
+  </defs>
+
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#bg)"/>
+  <rect x="0" y="0" width="760" height="1080" fill="url(#dots)"/>
+  <circle cx="430" cy="120" r="360" fill="url(#glow)"/>
+
+  <rect x="70" y="66" width="56" height="56" rx="16" fill="#ffffff"/>
+  <path d="M88 82 L112 94 L88 106 Z" fill="#0a2461"/>
+  <text x="144" y="90" fill="#c6f23e" font-size="16" font-weight="800" letter-spacing="4">SILICON SLOPES</text>
+  <text x="144" y="118" font-size="24" font-weight="800"><tspan fill="#ffffff">StartFest </tspan><tspan fill="#c6f23e">2026</tspan></text>
+
+  <text x="70" y="232" fill="#ffffff" font-size="56" font-weight="800" letter-spacing="-1">Meet your</text>
+  <text x="70" y="296" fill="#c6f23e" font-size="56" font-weight="800" letter-spacing="-1">StartFest Pal.</text>
+  <text x="70" y="346" fill="#aebfe0" font-size="22">Navigate the day, capture every session,</text>
+  <text x="70" y="376" fill="#aebfe0" font-size="22">and meet the room. Free, in your browser.</text>
+
+  <rect x="70" y="468" width="560" height="468" rx="30" fill="#c6f23e"/>
+  <rect x="240" y="506" width="220" height="220" rx="18" fill="#ffffff"/>
+  <image x="250" y="516" width="200" height="200" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgAQMAAABHGizWAAAABlBMVEX///8IFTqqaL1gAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB7klEQVR4nO3bOZLDIBCFYVQOFOoIOoqPJh9NR/ERFDpQmTHQNIu8jplJ9L9Ei/kIu2iEjSH7iK1yur3r3M3ifp3sOQw6m0M9EgwGgxOejaZzeIhz5MM9TgNNDwaDwQ1xHwYsAZt48RntGm48HsPIGQwGg5/jwV7dMkhWQz5gMBj8n1gXRWvdlIHBYPBjrCn7Kh8/XMuQBgwGg9vhMtlq6OCefFP2/hY1GAzeJb6XLptK8bsBg8Hgz7BNWaLKt3dE6Rx+GXS0FzAYDG6G3UbP1d3KGsrGpzXDMlaewGAwuML2dpfWP1lRMsX3KomUIasdHRgMBn+LpYa5F1K8bL3LrDkXc4DBYHBflqE5Kfl6nnaZszku2oqBwWBwM6y56vpHTu+YtK9jnu8NgcHgfePZSIZsDhf/oVwPAK5Z/TmGCxgMBjfDshqSD1VdXcMkjoTilXV0YDAYnLBmiWM3J/8Ep8oFBoPB3+Nthrga8inPAY7OP5RgMBj8C1zXqFPsze78K8LhS9abgcFgcMRzKivyoWqTbRnqwWAwuCHuY9WSTaG0GprqEhebMjAYDH6BJWl7WevPGH6Z5S0YDAb/IZamTLFM1Qf8ooaBweD9YU3CeinPAfrIHGAwGNwIl5GmbLL6T005xLMJGAwGN8FkD/kBQJooy7iMyJcAAAAASUVORK5CYII="/>
+  <text x="350" y="784" text-anchor="middle" fill="#08153a" fill-opacity="0.62" font-size="17" font-weight="800" letter-spacing="2.5">TRY IT FREE — NO INSTALL</text>
+  <text x="350" y="838" text-anchor="middle" fill="#08153a" font-size="34" font-weight="800" letter-spacing="-0.5">tinyurl.com/StartFestPal</text>
+  <text x="350" y="880" text-anchor="middle" fill="#08153a" fill-opacity="0.72" font-size="19">Scan the code or open it on any phone</text>
+
+  <g>
+    <rect x="690" y="90" width="560" height="290" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="690" y="130" width="6" height="210" rx="3" fill="#c6f23e"/>
+    <rect x="720" y="199" width="72" height="72" rx="18" fill="#c6f23e"/>
+    <g transform="translate(738,217) scale(1.5)" fill="none" stroke="#062018" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g>
+    <text x="814" y="228" fill="#ffffff" font-size="27" font-weight="800">Up next &amp; rooms</text>
+    <text x="814" y="265" fill="#9fb3da" font-size="19">See what&#39;s next and where it is</text>
+  </g>
+  <g>
+    <rect x="1290" y="90" width="560" height="290" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="1290" y="130" width="6" height="210" rx="3" fill="#19c9b6"/>
+    <rect x="1320" y="199" width="72" height="72" rx="18" fill="#19c9b6"/>
+    <g transform="translate(1338,217) scale(1.5)" fill="none" stroke="#062018" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <text x="1414" y="228" fill="#ffffff" font-size="27" font-weight="800">See who&#39;s going</text>
+    <text x="1414" y="265" fill="#9fb3da" font-size="19">Who&#39;s attending each session</text>
+  </g>
+  <g>
+    <rect x="690" y="405" width="560" height="290" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="690" y="445" width="6" height="210" rx="3" fill="#4fb8f0"/>
+    <rect x="720" y="514" width="72" height="72" rx="18" fill="#4fb8f0"/>
+    <g transform="translate(738,532) scale(1.5)" fill="none" stroke="#06243a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z"/></g>
+    <text x="814" y="543" fill="#ffffff" font-size="27" font-weight="800">Spot what&#39;s popular</text>
+    <text x="814" y="580" fill="#9fb3da" font-size="19">The most-saved sessions, live</text>
+  </g>
+  <g>
+    <rect x="1290" y="405" width="560" height="290" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="1290" y="445" width="6" height="210" rx="3" fill="#ec5b9e"/>
+    <rect x="1320" y="514" width="72" height="72" rx="18" fill="#ec5b9e"/>
+    <g transform="translate(1338,532) scale(1.5)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 19v3"/></g>
+    <text x="1414" y="543" fill="#ffffff" font-size="27" font-weight="800">Record &amp; transcribe</text>
+    <text x="1414" y="580" fill="#9fb3da" font-size="19">Free — with instant AI highlights</text>
+  </g>
+  <g>
+    <rect x="690" y="720" width="560" height="290" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="690" y="760" width="6" height="210" rx="3" fill="#8b7bf0"/>
+    <rect x="720" y="829" width="72" height="72" rx="18" fill="#8b7bf0"/>
+    <g transform="translate(738,847) scale(1.5)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g>
+    <text x="814" y="858" fill="#ffffff" font-size="27" font-weight="800">Chat with everyone</text>
+    <text x="814" y="895" fill="#9fb3da" font-size="19">The Lounge + per-session chat</text>
+  </g>
+  <g>
+    <rect x="1290" y="720" width="560" height="290" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="1290" y="760" width="6" height="210" rx="3" fill="#f59e6b"/>
+    <rect x="1320" y="829" width="72" height="72" rx="18" fill="#f59e6b"/>
+    <g transform="translate(1338,847) scale(1.5)" fill="none" stroke="#3a2008" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
+    <text x="1414" y="858" fill="#ffffff" font-size="27" font-weight="800">Slopers directory</text>
+    <text x="1414" y="895" fill="#9fb3da" font-size="19">Find attendees, socials &amp; schedules</text>
+  </g>
+
+  <text x="1290" y="1035" text-anchor="middle" fill="#7f93b8" font-size="17">An app by Taha Salahuddin Abbasi (The Brown Cowboy)  ·  Powered by AskFlorence</text>
+</svg>

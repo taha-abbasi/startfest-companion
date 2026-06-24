@@ -1,0 +1,114 @@
+<svg viewBox="0 0 1080 1440" width="1080" height="1440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl desc" font-family="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <title id="ttl">StartFest Pal — your StartFest companion app</title>
+  <desc id="desc">Six features: the Lounge chat, per-session chat and notes, snap slides and QR codes, live transcription, AI highlights, and a Slopers directory. Try it free at tinyurl.com/StartFestPal.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#061634"/>
+      <stop offset="0.35" stop-color="#082155"/>
+      <stop offset="0.7" stop-color="#0a346e"/>
+      <stop offset="1" stop-color="#0c5572"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#c6f23e" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#c6f23e" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.6" fill="#ffffff" fill-opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <rect x="0" y="0" width="1080" height="1440" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1080" height="520" fill="url(#dots)"/>
+  <circle cx="980" cy="120" r="320" fill="url(#glow)"/>
+
+  <g>
+    <rect x="64" y="52" width="60" height="60" rx="16" fill="#ffffff"/>
+    <path d="M84 70 L110 82 L84 94 Z" fill="#0a2461"/>
+    <text x="140" y="80" fill="#c6f23e" font-size="18" font-weight="800" letter-spacing="4">SILICON SLOPES</text>
+    <text x="140" y="110" font-size="26" font-weight="800"><tspan fill="#ffffff">StartFest </tspan><tspan fill="#c6f23e">2026</tspan></text>
+  </g>
+
+  <text x="64" y="200" fill="#ffffff" font-size="60" font-weight="800" letter-spacing="-1">Meet your</text>
+  <text x="64" y="268" fill="#c6f23e" font-size="60" font-weight="800" letter-spacing="-1">StartFest Pal.</text>
+  <text x="64" y="316" fill="#aebfe0" font-size="23">Connect with fellow Slopers, capture every session,</text>
+  <text x="64" y="348" fill="#aebfe0" font-size="23">and never take a frantic note again. Free, in your browser.</text>
+
+  <g>
+    <rect x="64" y="398" width="460" height="210" rx="24" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="64" y="430" width="5" height="146" rx="2.5" fill="#19c9b6"/>
+    <rect x="92" y="475" width="56" height="56" rx="15" fill="#19c9b6"/>
+    <g transform="translate(108,491)" fill="none" stroke="#062018" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+    </g>
+    <text x="172" y="500" fill="#ffffff" font-size="25" font-weight="800">The Lounge</text>
+    <text x="172" y="532" fill="#9fb3da" font-size="18">Live chat for all of StartFest</text>
+  </g>
+  <g>
+    <rect x="556" y="398" width="460" height="210" rx="24" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="556" y="430" width="5" height="146" rx="2.5" fill="#4fb8f0"/>
+    <rect x="584" y="475" width="56" height="56" rx="15" fill="#4fb8f0"/>
+    <g transform="translate(600,491)" fill="none" stroke="#06243a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4 3v-3H6a2 2 0 0 1-2-2Z"/>
+      <path d="M8 9h8M8 12h5"/>
+    </g>
+    <text x="664" y="500" fill="#ffffff" font-size="25" font-weight="800">Session chat &amp; notes</text>
+    <text x="664" y="532" fill="#9fb3da" font-size="18">Share links &amp; questions per room</text>
+  </g>
+  <g>
+    <rect x="64" y="636" width="460" height="210" rx="24" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="64" y="668" width="5" height="146" rx="2.5" fill="#8b7bf0"/>
+    <rect x="92" y="713" width="56" height="56" rx="15" fill="#8b7bf0"/>
+    <g transform="translate(108,729)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/>
+      <circle cx="12" cy="13" r="4"/>
+    </g>
+    <text x="172" y="738" fill="#ffffff" font-size="25" font-weight="800">Snap slides &amp; QR codes</text>
+    <text x="172" y="770" fill="#9fb3da" font-size="18">Photo it now, sort it out later</text>
+  </g>
+  <g>
+    <rect x="556" y="636" width="460" height="210" rx="24" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="556" y="668" width="5" height="146" rx="2.5" fill="#ec5b9e"/>
+    <rect x="584" y="713" width="56" height="56" rx="15" fill="#ec5b9e"/>
+    <g transform="translate(600,729)" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="9" y="2" width="6" height="12" rx="3"/>
+      <path d="M5 10a7 7 0 0 0 14 0M12 19v3"/>
+    </g>
+    <text x="664" y="738" fill="#ffffff" font-size="25" font-weight="800">Live transcription</text>
+    <text x="664" y="770" fill="#9fb3da" font-size="18">Record talks, even in loud rooms</text>
+  </g>
+  <g>
+    <rect x="64" y="874" width="460" height="210" rx="24" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="64" y="906" width="5" height="146" rx="2.5" fill="#c6f23e"/>
+    <rect x="92" y="951" width="56" height="56" rx="15" fill="#c6f23e"/>
+    <g transform="translate(108,967)" fill="none" stroke="#062018" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z"/>
+    </g>
+    <text x="172" y="976" fill="#ffffff" font-size="25" font-weight="800">AI highlights</text>
+    <text x="172" y="1008" fill="#9fb3da" font-size="18">Key points &amp; action items, auto</text>
+  </g>
+  <g>
+    <rect x="556" y="874" width="460" height="210" rx="24" fill="#ffffff" fill-opacity="0.045" stroke="#ffffff" stroke-opacity="0.1"/>
+    <rect x="556" y="906" width="5" height="146" rx="2.5" fill="#f59e6b"/>
+    <rect x="584" y="951" width="56" height="56" rx="15" fill="#f59e6b"/>
+    <g transform="translate(600,967)" fill="none" stroke="#3a2008" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+    </g>
+    <text x="664" y="976" fill="#ffffff" font-size="25" font-weight="800">Slopers directory</text>
+    <text x="664" y="1008" fill="#9fb3da" font-size="18">See who&#39;s here &amp; connect</text>
+  </g>
+
+  <rect x="64" y="1144" width="952" height="196" rx="32" fill="#c6f23e"/>
+  <text x="104" y="1206" fill="#08153a" fill-opacity="0.65" font-size="17" font-weight="800" letter-spacing="2.5">TRY IT NOW — FREE, NO INSTALL</text>
+  <text x="104" y="1258" fill="#08153a" font-size="46" font-weight="800" letter-spacing="-0.5">tinyurl.com/StartFestPal</text>
+  <text x="104" y="1298" fill="#08153a" fill-opacity="0.72" font-size="19">Open it on your phone — works in any browser</text>
+  <circle cx="936" cy="1242" r="52" fill="#08153a"/>
+  <g transform="translate(936,1242)" stroke="#c6f23e" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M-15 0 H15"/>
+    <path d="M5 -11 L16 0 L5 11"/>
+  </g>
+
+  <text x="540" y="1404" text-anchor="middle" fill="#7f93b8" font-size="17">An app by Taha Salahuddin Abbasi (The Brown Cowboy)  ·  Powered by AskFlorence</text>
+</svg>
