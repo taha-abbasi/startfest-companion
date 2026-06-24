@@ -59,6 +59,10 @@ export interface AttendeeDoc {
   smsOptIn: boolean;
   /** consent to have their name shown on public "who's going" lists */
   showPublicly: boolean;
+  /** optional profile extras for the Slopers directory */
+  avatar?: string | null; // compressed data URL
+  x?: string | null; // X/Twitter profile URL
+  linkedin?: string | null; // LinkedIn profile URL
   createdAt: Date;
   updatedAt: Date;
   /** set when the attendee globally unsubscribes from all email */

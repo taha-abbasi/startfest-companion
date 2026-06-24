@@ -32,6 +32,9 @@ async function loadInitial(): Promise<{
           emailOptIn: att.emailOptIn,
           smsOptIn: att.smsOptIn,
           showPublicly: att.showPublicly,
+          avatar: att.avatar ?? null,
+          x: att.x ?? null,
+          linkedin: att.linkedin ?? null,
         };
         const ids = await (await signups()).find({ email }).project({ sessionId: 1, _id: 0 }).toArray();
         sessionIds = ids.map((d) => (d as { sessionId: string }).sessionId);

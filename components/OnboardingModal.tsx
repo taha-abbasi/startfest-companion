@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useApp } from "@/components/store";
 import { getSession } from "@/data/schedule";
-import { X, ArrowRight, Plus } from "@/components/icons";
+import { X, ArrowRight, Plus, ImagePlus, XLogo, LinkedInLogo } from "@/components/icons";
+import { compressImage } from "@/lib/image";
 import { BRAND } from "@/lib/brand";
 
 function Checkbox({
@@ -55,8 +56,13 @@ export function OnboardingModal() {
   const [smsOptIn, setSmsOptIn] = useState(false);
   const [showPublicly, setShowPublicly] = useState(true);
   const [showPhone, setShowPhone] = useState(false);
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const [xUrl, setXUrl] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [avatarBusy, setAvatarBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const photoInputRef = useRef<HTMLInputElement | null>(null);
 
   // Hydrate when opening (edit mode pre-fills existing values).
   useEffect(() => {
@@ -68,9 +74,26 @@ export function OnboardingModal() {
       setSmsOptIn(attendee?.smsOptIn ?? false);
       setShowPublicly(attendee?.showPublicly ?? true);
       setShowPhone(!!attendee?.phone); // only reveal phone if they already added one
+      setAvatar(attendee?.avatar ?? null);
+      setXUrl(attendee?.x ?? "");
+      setLinkedin(attendee?.linkedin ?? "");
       setErr(null);
     }
   }, [onboarding.open, attendee]);
+
+  const onPickPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setAvatarBusy(true);
+    try {
+      setAvatar(await compressImage(file));
+    } catch {
+      setErr("Couldn't process that image — try another.");
+    } finally {
+      setAvatarBusy(false);
+    }
+  };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && closeOnboarding();
@@ -95,6 +118,9 @@ export function OnboardingModal() {
       emailOptIn,
       smsOptIn,
       showPublicly,
+      avatar,
+      x: xUrl.trim() || undefined,
+      linkedin: linkedin.trim() || undefined,
     });
     setSubmitting(false);
     if (!res.ok) setErr(res.error ?? "Something went wrong.");
@@ -131,6 +157,50 @@ export function OnboardingModal() {
         </div>
 
         <form onSubmit={submit} className="space-y-3.5">
+          {/* Avatar */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => photoInputRef.current?.click()}
+              className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/[0.06]"
+            >
+              {avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatar} alt="Your photo" className="h-full w-full object-cover" />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-white/40">
+                  <ImagePlus width={22} height={22} />
+                </span>
+              )}
+            </button>
+            <div>
+              <button
+                type="button"
+                onClick={() => photoInputRef.current?.click()}
+                className="text-sm font-semibold text-lime hover:underline"
+              >
+                {avatarBusy ? "Processing…" : avatar ? "Change photo" : "Add a photo"}
+              </button>
+              <p className="text-xs text-white/45">Upload or take a selfie · optional</p>
+              {avatar && (
+                <button
+                  type="button"
+                  onClick={() => setAvatar(null)}
+                  className="mt-0.5 text-[11px] text-white/40 hover:text-white/70"
+                >
+                  remove
+                </button>
+              )}
+            </div>
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={onPickPhoto}
+            />
+          </div>
+
           <div>
             <label className="label" htmlFor="ob-name">Name</label>
             <input
@@ -196,6 +266,30 @@ export function OnboardingModal() {
               />
             </div>
           )}
+
+          {/* Socials — for the Slopers directory */}
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            <div className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.06] px-3">
+              <XLogo className="shrink-0 text-white/55" />
+              <input
+                value={xUrl}
+                onChange={(e) => setXUrl(e.target.value)}
+                placeholder="X handle or URL"
+                className="w-full bg-transparent py-2.5 text-sm text-white placeholder-white/40 outline-none"
+                autoComplete="off"
+              />
+            </div>
+            <div className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.06] px-3">
+              <LinkedInLogo className="shrink-0 text-white/55" />
+              <input
+                value={linkedin}
+                onChange={(e) => setLinkedin(e.target.value)}
+                placeholder="LinkedIn URL"
+                className="w-full bg-transparent py-2.5 text-sm text-white placeholder-white/40 outline-none"
+                autoComplete="off"
+              />
+            </div>
+          </div>
 
           <div className="space-y-2 pt-1">
             <Checkbox

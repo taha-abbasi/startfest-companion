@@ -10,6 +10,7 @@ import {
   IDENTITY_COOKIE_OPTS,
 } from "@/lib/identity";
 import { normalizePhone } from "@/lib/sms";
+import { normalizeX, normalizeLinkedIn, sanitizeAvatar } from "@/lib/socials";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,6 +43,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "That phone number doesn't look right." }, { status: 400 });
   }
 
+  const avatar = sanitizeAvatar(body.avatar as string | undefined);
+  const x = normalizeX(body.x as string | undefined);
+  const linkedin = normalizeLinkedIn(body.linkedin as string | undefined);
+
   await ensureIndexes();
   const col = await attendees();
   const now = new Date();
@@ -52,6 +57,9 @@ export async function POST(req: Request) {
     emailOptIn,
     smsOptIn: smsOptIn && !!phone,
     showPublicly,
+    avatar,
+    x,
+    linkedin,
     updatedAt: now,
   };
 
@@ -72,7 +80,7 @@ export async function POST(req: Request) {
   );
 
   const res = NextResponse.json({
-    attendee: { name, email, phone, emailOptIn, smsOptIn: update.smsOptIn, showPublicly },
+    attendee: { name, email, phone, emailOptIn, smsOptIn: update.smsOptIn, showPublicly, avatar, x, linkedin },
     sessionIds,
     feedToken: makeFeedToken(email),
   });

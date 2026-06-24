@@ -18,6 +18,9 @@ export interface Attendee {
   emailOptIn: boolean;
   smsOptIn: boolean;
   showPublicly: boolean;
+  avatar?: string | null;
+  x?: string | null;
+  linkedin?: string | null;
 }
 
 export interface IdentifyPayload {
@@ -27,9 +30,12 @@ export interface IdentifyPayload {
   emailOptIn: boolean;
   smsOptIn: boolean;
   showPublicly: boolean;
+  avatar?: string | null;
+  x?: string;
+  linkedin?: string;
 }
 
-type View = "schedule" | "agenda" | "lounge";
+type View = "schedule" | "agenda" | "lounge" | "directory";
 
 export interface Toast {
   id: number;
@@ -79,6 +85,10 @@ interface AppCtx {
   openDonate: () => void;
   closeDonate: () => void;
 
+  sloperId: string | null;
+  openSloper: (id: string) => void;
+  closeSloper: () => void;
+
   toasts: Toast[];
   pushToast: (text: string, tone?: Toast["tone"]) => void;
   dismissToast: (id: number) => void;
@@ -127,6 +137,7 @@ export function AppProvider({
   const [chatSessionId, setChatSessionId] = useState<string | null>(null);
   const [notesSessionId, setNotesSessionId] = useState<string | null>(null);
   const [donateOpen, setDonateOpen] = useState(false);
+  const [sloperId, setSloperId] = useState<string | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const toastSeq = useRef(0);
@@ -309,6 +320,8 @@ export function AppProvider({
   const closeNotes = useCallback(() => setNotesSessionId(null), []);
   const openDonate = useCallback(() => setDonateOpen(true), []);
   const closeDonate = useCallback(() => setDonateOpen(false), []);
+  const openSloper = useCallback((id: string) => setSloperId(id), []);
+  const closeSloper = useCallback(() => setSloperId(null), []);
 
   const value: AppCtx = {
     attendee,
@@ -339,6 +352,9 @@ export function AppProvider({
     donateOpen,
     openDonate,
     closeDonate,
+    sloperId,
+    openSloper,
+    closeSloper,
     toasts,
     pushToast,
     dismissToast,

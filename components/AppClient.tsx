@@ -8,6 +8,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { ScheduleView } from "@/components/ScheduleView";
 import { MyAgenda } from "@/components/MyAgenda";
 import { Lounge } from "@/components/Lounge";
+import { Directory } from "@/components/Directory";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { AttendeesModal } from "@/components/AttendeesModal";
 import { SessionChatModal } from "@/components/SessionChatModal";
@@ -42,6 +43,7 @@ function Body() {
         <div className="mx-auto max-w-4xl">
           {view === "schedule" && <ScheduleView />}
           {view === "lounge" && <Lounge />}
+          {view === "directory" && <Directory />}
           {view === "agenda" && <MyAgenda />}
         </div>
       </main>
