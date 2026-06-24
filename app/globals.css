@@ -93,3 +93,14 @@ input[type="tel"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+/* Prevent iOS Safari from auto-zooming on input focus.
+   Any field under 16px triggers the zoom, so force >=16px on touch/small
+   screens. Overrides Tailwind text-sm etc.; desktop sizing is untouched. */
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
