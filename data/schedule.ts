@@ -35,7 +35,7 @@ export interface Speaker {
 export interface Session {
   id: string;
   day: 1 | 2;
-  /** ISO date in conference local time, e.g. "2026-06-23" */
+  /** ISO date in conference local time, e.g. "2026-08-29" */
   date: string;
   /** 24h local start "HH:MM" (MDT) */
   start: string;
@@ -92,9 +92,29 @@ export const CONFERENCE = {
   utcOffset: "-06:00",
 };
 
+function weekdayOf(dateStr: string): string {
+  return new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: CONFERENCE.tz }).format(
+    new Date(`${dateStr}T12:00:00${CONFERENCE.utcOffset}`)
+  );
+}
+
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+
+/** "Aug 29" from "2026-08-29" */
+export function dayShort(dateStr: string): string {
+  return `${MONTHS[Number(dateStr.slice(5, 7)) - 1].slice(0, 3)} ${Number(dateStr.slice(8, 10))}`;
+}
+/** "August 29" from "2026-08-29" */
+export function dayLong(dateStr: string): string {
+  return `${MONTHS[Number(dateStr.slice(5, 7)) - 1]} ${Number(dateStr.slice(8, 10))}`;
+}
+
 export const DAYS = [
-  { day: 1 as const, date: "2026-06-23", weekday: "Tuesday", label: "Day 1" },
-  { day: 2 as const, date: "2026-06-24", weekday: "Wednesday", label: "Day 2" },
+  { day: 1 as const, date: "2026-08-29", weekday: weekdayOf("2026-08-29"), label: "Day 1" },
+  { day: 2 as const, date: "2026-08-30", weekday: weekdayOf("2026-08-30"), label: "Day 2" },
 ];
 
 // ── Sessions ────────────────────────────────────────────────────────────────
@@ -102,19 +122,19 @@ export const SESSIONS: Session[] = [
   // ===== DAY 1 — Tuesday, June 23 =====
   {
     id: "welcome",
-    day: 1, date: "2026-06-23", start: "09:00", end: "09:15",
+    day: 1, date: "2026-08-29", start: "09:00", end: "09:15",
     title: "Welcome", track: "mainstage", room: "mainstage", kind: "plenary",
     speakers: [{ name: "Clint Betts" }, { name: "Lindsey Ivie" }],
   },
   {
     id: "d1-keynote",
-    day: 1, date: "2026-06-23", start: "09:15", end: "09:45",
+    day: 1, date: "2026-08-29", start: "09:15", end: "09:45",
     title: "Opening Keynote", track: "mainstage", room: "mainstage", kind: "plenary",
     speakers: [{ name: "Nick Thomas", title: "CEO Nordmark · Co-founded Bluetooth Special Interest Group" }],
   },
   {
     id: "d1-panel-money",
-    day: 1, date: "2026-06-23", start: "09:45", end: "10:15",
+    day: 1, date: "2026-08-29", start: "09:45", end: "10:15",
     title: "The State of Silicon Slopes: Where the Money Is Moving",
     track: "mainstage", room: "mainstage", kind: "plenary",
     speakers: [
@@ -124,101 +144,101 @@ export const SESSIONS: Session[] = [
   },
   {
     id: "break-d1-1",
-    day: 1, date: "2026-06-23", start: "11:05", end: "11:25",
+    day: 1, date: "2026-08-29", start: "11:05", end: "11:25",
     title: "Break", track: "mainstage", room: "mainstage", kind: "break", speakers: [],
   },
   {
     id: "bridging-the-gap",
-    day: 1, date: "2026-06-23", start: "10:30", end: "11:05",
+    day: 1, date: "2026-08-29", start: "10:30", end: "11:05",
     title: "Bridging the Gap", track: "funding", room: "start", kind: "session",
     speakers: [{ name: "Scott Holley", title: "Executive Director, Lassonde Entrepreneur Institute" }],
   },
   {
     id: "you-cant-scale",
-    day: 1, date: "2026-06-23", start: "10:30", end: "11:05",
+    day: 1, date: "2026-08-29", start: "10:30", end: "11:05",
     title: "You Can't Scale What You Can't Regulate", track: "leadership", room: "ignition", kind: "session",
     speakers: [{ name: "Lisa Jones Christensen", title: "Associate Professor of Entrepreneurship, Marriott School of Business, BYU" }],
   },
   {
     id: "ai-blueprint-workshop",
-    day: 1, date: "2026-06-23", start: "10:30", end: "11:05",
+    day: 1, date: "2026-08-29", start: "10:30", end: "11:05",
     title: "AI Blueprint Workshop", track: "ai", room: "accelerator", kind: "session",
     speakers: [{ name: "Cameo Doran", title: "Founder, Cameo Labs" }],
   },
   {
     id: "surviving-the-ai-correction",
-    day: 1, date: "2026-06-23", start: "10:30", end: "11:05",
+    day: 1, date: "2026-08-29", start: "10:30", end: "11:05",
     title: "Surviving the AI Correction", track: "ai", room: "start", kind: "session",
     speakers: [{ name: "Michael Malin", title: "Founder, Model Forge" }],
   },
   {
     id: "ai-not-your-cmo",
-    day: 1, date: "2026-06-23", start: "11:25", end: "12:00",
+    day: 1, date: "2026-08-29", start: "11:25", end: "12:00",
     title: "AI Is Not Your CMO: The New GTM Math", track: "sales", room: "start", kind: "session",
     speakers: [{ name: "Joe Grover", title: "CGO, Ampleo" }],
   },
   {
     id: "funding-lendio",
-    day: 1, date: "2026-06-23", start: "11:25", end: "12:00",
+    day: 1, date: "2026-08-29", start: "11:25", end: "12:00",
     title: "Funding", track: "funding", room: "ignition", kind: "session",
     speakers: [{ name: "Brock Blake", title: "CEO, Lendio" }],
   },
   {
     id: "even-achieving",
-    day: 1, date: "2026-06-23", start: "11:25", end: "12:00",
+    day: 1, date: "2026-08-29", start: "11:25", end: "12:00",
     title: "Even-Achieving: How to Balance Stress with Success", track: "leadership", room: "accelerator", kind: "session",
     speakers: [{ name: "Erika Coleman", title: "Erika Coleman Speaks" }],
   },
   {
     id: "lunch-d1",
-    day: 1, date: "2026-06-23", start: "12:00", end: "13:30",
+    day: 1, date: "2026-08-29", start: "12:00", end: "13:30",
     title: "Networking Lunch", track: "mainstage", room: "mainstage", kind: "break", speakers: [],
   },
   {
     id: "content-people-want",
-    day: 1, date: "2026-06-23", start: "13:30", end: "14:05",
+    day: 1, date: "2026-08-29", start: "13:30", end: "14:05",
     title: "How to Make Content People Actually Want to Watch", track: "marketing", room: "start", kind: "session",
     speakers: [{ name: "Levi Lindsay", title: "VP of Creative, Pestie" }],
   },
   {
     id: "ai-for-c-suite",
-    day: 1, date: "2026-06-23", start: "13:30", end: "14:05",
+    day: 1, date: "2026-08-29", start: "13:30", end: "14:05",
     title: "AI for the C-Suite", track: "ai", room: "ignition", kind: "session",
     speakers: [{ name: "Landon Essig", title: "CEO, CoDev" }],
   },
   {
     id: "advisory-board-fundraising",
-    day: 1, date: "2026-06-23", start: "13:30", end: "14:05",
+    day: 1, date: "2026-08-29", start: "13:30", end: "14:05",
     title: "Build an Advisory Board to Strengthen Fundraising", track: "funding", room: "accelerator", kind: "session",
     speakers: [{ name: "Nicole Toomey Davis", title: "President & CEO and Co-Founder, Enclavix, LLC" }],
   },
   {
     id: "leadership-daly",
-    day: 1, date: "2026-06-23", start: "14:15", end: "15:00",
+    day: 1, date: "2026-08-29", start: "14:15", end: "15:00",
     title: "Leadership", track: "leadership", room: "start", kind: "session",
     speakers: [{ name: "Steve Daly", title: "CEO, Instructure" }],
   },
   {
     id: "comp-plan-pipeline",
-    day: 1, date: "2026-06-23", start: "14:15", end: "15:00",
+    day: 1, date: "2026-08-29", start: "14:15", end: "15:00",
     title: "Your Comp Plan Is Killing Your Pipeline", track: "sales", room: "ignition", kind: "session",
     speakers: [{ name: "Amy Cook", title: "CMO, Fullcast" }],
   },
   {
     id: "build-business-with-ai",
-    day: 1, date: "2026-06-23", start: "14:15", end: "15:00",
+    day: 1, date: "2026-08-29", start: "14:15", end: "15:00",
     title: "How to Build a Business with AI", track: "ai", room: "accelerator", kind: "session",
     speakers: [{ name: "Jon Cheney", title: "CEO, GENAIPI" }],
   },
   {
     id: "leadership-arntz",
-    day: 1, date: "2026-06-23", start: "15:15", end: "16:00",
+    day: 1, date: "2026-08-29", start: "15:15", end: "16:00",
     title: "Leadership", track: "leadership", room: "start", kind: "session",
     speakers: [{ name: "Steve Arntz", title: "CEO, Campfire" }],
   },
   {
     id: "hackathon",
-    day: 1, date: "2026-06-23", start: "15:15", end: "17:00",
+    day: 1, date: "2026-08-29", start: "15:15", end: "17:00",
     title: "Hackathon", track: "ai", room: "hackathon", kind: "activity",
     speakers: [],
     note: "Build something live with fellow founders.",
@@ -227,7 +247,7 @@ export const SESSIONS: Session[] = [
   // ===== DAY 2 — Wednesday, June 24 =====
   {
     id: "d2-keynote",
-    day: 2, date: "2026-06-24", start: "08:45", end: "09:15",
+    day: 2, date: "2026-08-30", start: "08:45", end: "09:15",
     title: "AI and the Future of Utah", track: "mainstage", room: "mainstage", kind: "plenary",
     note: "Opening Keynote",
     speakers: [
@@ -237,31 +257,31 @@ export const SESSIONS: Session[] = [
   },
   {
     id: "startup-world-cup",
-    day: 2, date: "2026-06-24", start: "09:15", end: "10:50",
+    day: 2, date: "2026-08-30", start: "09:15", end: "10:50",
     title: "Startup World Cup — 10 Finalists", track: "mainstage", room: "mainstage", kind: "plenary",
     speakers: [],
   },
   {
     id: "chaos-to-process",
-    day: 2, date: "2026-06-24", start: "11:00", end: "11:35",
+    day: 2, date: "2026-08-30", start: "11:00", end: "11:35",
     title: "From Chaos to Process", track: "operations", room: "start", kind: "session",
     speakers: [{ name: "Jake Fackrell", title: "COO, Savvos Health" }],
   },
   {
     id: "ai-automation",
-    day: 2, date: "2026-06-24", start: "11:00", end: "11:35",
+    day: 2, date: "2026-08-30", start: "11:00", end: "11:35",
     title: "AI Automation", track: "ai", room: "ignition", kind: "session",
     speakers: [{ name: "Gabe Larsen", title: "Atonom" }],
   },
   {
     id: "ai-powered-growth-marketing",
-    day: 2, date: "2026-06-24", start: "11:00", end: "11:35",
+    day: 2, date: "2026-08-30", start: "11:00", end: "11:35",
     title: "AI-Powered Growth Marketing", track: "sales", room: "accelerator", kind: "session",
     speakers: [{ name: "Michael Schmutz", title: "Founder, DataXGrowth" }],
   },
   {
     id: "room-owes-you-nothing",
-    day: 2, date: "2026-06-24", start: "11:40", end: "12:15",
+    day: 2, date: "2026-08-30", start: "11:40", end: "12:15",
     title: "The Room Owes You Nothing: Leading Without a Resume", track: "leadership", room: "start", kind: "session",
     speakers: [
       { name: "Kurt Workman", title: "CEO, Owlet" },
@@ -270,14 +290,14 @@ export const SESSIONS: Session[] = [
   },
   {
     id: "unexpected-obvious-growth",
-    day: 2, date: "2026-06-24", start: "11:40", end: "12:15",
+    day: 2, date: "2026-08-30", start: "11:40", end: "12:15",
     title: "The Unexpected Obvious of Growth: Conferences, Podcasts & Thought Leadership",
     track: "marketing", room: "ignition", kind: "session",
     speakers: [{ name: "Zack Oates", title: "Founder & CEO, Ovation" }],
   },
   {
     id: "event-marketing",
-    day: 2, date: "2026-06-24", start: "11:40", end: "12:15",
+    day: 2, date: "2026-08-30", start: "11:40", end: "12:15",
     title: "Event Marketing", track: "marketing", room: "accelerator", kind: "session",
     speakers: [
       { name: "Catherine Bennett" },
@@ -287,56 +307,56 @@ export const SESSIONS: Session[] = [
   },
   {
     id: "lunch-d2",
-    day: 2, date: "2026-06-24", start: "12:30", end: "14:00",
+    day: 2, date: "2026-08-30", start: "12:30", end: "14:00",
     title: "Networking Lunch", track: "mainstage", room: "mainstage", kind: "break", speakers: [],
   },
   {
     id: "stop-noise-build-signal",
-    day: 2, date: "2026-06-24", start: "14:00", end: "14:35",
+    day: 2, date: "2026-08-30", start: "14:00", end: "14:35",
     title: "Stop Producing Noise. Start Building Signal", track: "marketing", room: "start", kind: "session",
     speakers: [{ name: "Krista Parry", title: "Founder, KP Media" }],
   },
   {
     id: "reliable-ai-pydantic-n8n",
-    day: 2, date: "2026-06-24", start: "14:00", end: "14:35",
+    day: 2, date: "2026-08-30", start: "14:00", end: "14:35",
     title: "Building Reliable AI Workflow Automations with Pydantic & n8n", track: "ai", room: "ignition", kind: "session",
     speakers: [{ name: "Jordan Gunderson", title: "Co-Founder, Izeni" }],
   },
   {
     id: "teams-stop-talking",
-    day: 2, date: "2026-06-24", start: "14:00", end: "14:35",
+    day: 2, date: "2026-08-30", start: "14:00", end: "14:35",
     title: "When Teams Stop Talking, Data Stops Working", track: "operations", room: "accelerator", kind: "session",
     speakers: [{ name: "Russ Hannig", title: "COO, SponsorCX" }],
   },
   {
     id: "sustainable-ai-data-centers",
-    day: 2, date: "2026-06-24", start: "14:40", end: "15:40",
+    day: 2, date: "2026-08-30", start: "14:40", end: "15:40",
     title: "Sustainable AI and the Rise of the Mega Data Centers", track: "ai", room: "start", kind: "session",
     note: "Panel Discussion",
     speakers: [{ name: "Brian Beutler", title: "CEO, Alianza" }],
   },
   {
     id: "open-office-hours",
-    day: 2, date: "2026-06-24", start: "14:40", end: "15:15",
+    day: 2, date: "2026-08-30", start: "14:40", end: "15:15",
     title: "Open Office Hours", track: "resource", room: "resource", kind: "session",
     note: "Resource partners in Marketing, Sales, Legal, Accounting, and Fund Raising.",
     speakers: [],
   },
   {
     id: "community-age-of-ai",
-    day: 2, date: "2026-06-24", start: "14:40", end: "15:15",
+    day: 2, date: "2026-08-30", start: "14:40", end: "15:15",
     title: "Building Community in the Age of AI", track: "marketing", room: "accelerator", kind: "session",
     speakers: [{ name: "Sindee Savage", title: "Community Architech, Sindee Savage Consulting" }],
   },
   {
     id: "million-dollar-video-ad",
-    day: 2, date: "2026-06-24", start: "15:20", end: "16:00",
+    day: 2, date: "2026-08-30", start: "15:20", end: "16:00",
     title: "The Million Dollar Video Ad Framework", track: "marketing", room: "ignition", kind: "session",
     speakers: [{ name: "Jake Larsen", title: "Founder, Video Power Marketing" }],
   },
   {
     id: "grinding-to-growing",
-    day: 2, date: "2026-06-24", start: "15:20", end: "16:00",
+    day: 2, date: "2026-08-30", start: "15:20", end: "16:00",
     title: "From Grinding to Growing: Architect Your Capacity Wall", track: "leadership", room: "accelerator", kind: "session",
     speakers: [{ name: "Russ Simon", title: "Founder, Russ Simon Leadership Solutions" }],
   },

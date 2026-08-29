@@ -5,6 +5,8 @@ import {
   speakerLine,
   ROOMS,
   CONFERENCE,
+  DAYS,
+  dayLong,
 } from "@/data/schedule";
 import { BRAND } from "@/lib/brand";
 
@@ -42,7 +44,7 @@ function layout(opts: { preheader: string; heading: string; body: string; unsubU
   <tr><td style="background:linear-gradient(135deg,${C.navy} 0%,${C.navy2} 60%,#16708a 100%);padding:26px 28px;">
     <div style="color:${C.lime};font-weight:800;letter-spacing:.14em;font-size:12px;text-transform:uppercase;">Silicon Slopes</div>
     <div style="color:#fff;font-weight:800;font-size:24px;line-height:1.1;margin-top:4px;">StartFest <span style="color:${C.lime};">2026</span></div>
-    <div style="color:#bcd0ff;font-size:12px;margin-top:6px;">June 23–24 · ${CONFERENCE.venue}</div>
+    <div style="color:#bcd0ff;font-size:12px;margin-top:6px;">${dayLong(DAYS[0].date)}–${DAYS[1].date.slice(-2)} · ${CONFERENCE.venue}</div>
   </td></tr>
   <tr><td style="padding:28px 28px 8px;">
     <h1 style="margin:0 0 14px;font-size:20px;line-height:1.3;color:${C.ink};">${opts.heading}</h1>

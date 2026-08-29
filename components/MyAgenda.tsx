@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { SESSIONS, DAYS, sessionStart, getSession, findConflicts, type Session } from "@/data/schedule";
+import { SESSIONS, DAYS, sessionStart, getSession, findConflicts, dayLong, type Session } from "@/data/schedule";
 import { useApp } from "@/components/store";
 import { SessionCard } from "@/components/SessionCard";
 import { AddToCalendar } from "@/components/AddToCalendar";
@@ -120,7 +120,7 @@ export function MyAgenda() {
             <div className="mb-3 flex items-center gap-3 px-1">
               <h3 className="text-sm font-bold uppercase tracking-wider text-lime">{d.label}</h3>
               <span className="text-sm text-white/50">
-                {d.weekday}, June {d.date.slice(-2)} · {dayMine.length} session
+                {d.weekday}, {dayLong(d.date)} · {dayMine.length} session
                 {dayMine.length > 1 ? "s" : ""}
               </span>
             </div>

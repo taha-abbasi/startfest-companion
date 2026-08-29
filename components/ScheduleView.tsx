@@ -9,6 +9,8 @@ import {
   type TrackId,
   sessionStart,
   formatStart,
+  dayShort,
+  dayLong,
   ROOMS,
 } from "@/data/schedule";
 import { SessionCard } from "@/components/SessionCard";
@@ -127,9 +129,7 @@ export function ScheduleView() {
                 </div>
                 <div className="text-sm font-semibold text-white">
                   {d.weekday}{" "}
-                  <span className="font-normal text-white/55">
-                    Jun {d.date.slice(-2)}
-                  </span>
+                  <span className="font-normal text-white/55">{dayShort(d.date)}</span>
                 </div>
               </button>
             );
@@ -175,7 +175,7 @@ export function ScheduleView() {
         {/* Day summary */}
       <div className="mb-4 flex items-center justify-between px-1 text-sm">
         <span className="text-white/55">
-          {dayMeta.weekday}, June {dayMeta.date.slice(-2)}
+          {dayMeta.weekday}, {dayLong(dayMeta.date)}
         </span>
         {myCountForDay > 0 && (
           <span className="font-semibold text-lime">
