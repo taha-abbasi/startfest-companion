@@ -63,6 +63,10 @@ export function OnboardingModal() {
   const [err, setErr] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const photoInputRef = useRef<HTMLInputElement | null>(null);
+  // Passwordless sign-in ("been here before?") mode.
+  const [signinMode, setSigninMode] = useState(false);
+  const [signinEmail, setSigninEmail] = useState("");
+  const [signinState, setSigninState] = useState<"idle" | "sending" | "sent" | "notfound" | "error">("idle");
 
   // Hydrate when opening (edit mode pre-fills existing values).
   useEffect(() => {
@@ -78,8 +82,33 @@ export function OnboardingModal() {
       setXUrl(attendee?.x ?? "");
       setLinkedin(attendee?.linkedin ?? "");
       setErr(null);
+      setSigninMode(false);
+      setSigninEmail("");
+      setSigninState("idle");
     }
   }, [onboarding.open, attendee]);
+
+  const doSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signinEmail.trim())) {
+      setSigninState("error");
+      return;
+    }
+    setSigninState("sending");
+    try {
+      const r = await fetch("/api/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: signinEmail.trim() }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (r.ok && d.found) setSigninState("sent");
+      else if (r.ok && d.found === false) setSigninState("notfound");
+      else setSigninState("error");
+    } catch {
+      setSigninState("error");
+    }
+  };
 
   const onPickPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -138,10 +167,12 @@ export function OnboardingModal() {
         <div className="mb-4 flex items-start justify-between">
           <div>
             <h2 className="text-xl font-bold text-white">
-              {editing ? "Your details" : pending ? "Almost there" : "Join StartFest"}
+              {signinMode ? "Welcome back" : editing ? "Your details" : pending ? "Almost there" : "Join StartFest"}
             </h2>
             <p className="mt-1 text-sm text-white/55">
-              {pending ? (
+              {signinMode ? (
+                "Enter your email — we'll send a one-tap link that restores your schedule & profile."
+              ) : pending ? (
                 <>
                   One quick step to add{" "}
                   <span className="font-semibold text-lime">{pending.title}</span>.
@@ -150,13 +181,72 @@ export function OnboardingModal() {
                 "No password. Just your name & email so we can save your schedule and remind you."
               )}
             </p>
+            {!editing && !signinMode && (
+              <button
+                type="button"
+                onClick={() => setSigninMode(true)}
+                className="mt-2 text-sm font-semibold text-lime hover:underline"
+              >
+                Been here before? Sign in →
+              </button>
+            )}
           </div>
           <button onClick={closeOnboarding} className="rounded-lg p-1.5 text-white/50 hover:bg-white/10 hover:text-white">
             <X width={20} height={20} />
           </button>
         </div>
 
-        <form onSubmit={submit} className="space-y-3.5">
+        {/* Sign-in (passwordless magic link) */}
+        {signinMode && (
+          <form onSubmit={doSignIn} className="space-y-3.5">
+            <div>
+              <label className="label" htmlFor="si-email">Email</label>
+              <input
+                id="si-email"
+                type="email"
+                className="input"
+                value={signinEmail}
+                onChange={(e) => setSigninEmail(e.target.value)}
+                placeholder="you@email.com"
+                autoFocus
+                autoComplete="email"
+              />
+            </div>
+            {signinState === "notfound" && (
+              <div className="rounded-lg bg-amber-500/15 px-3 py-2 text-sm text-amber-200">
+                No profile found for that email. Double-check it, or join as new instead.
+              </div>
+            )}
+            {signinState === "error" && (
+              <div className="rounded-lg bg-rose-500/15 px-3 py-2 text-sm font-medium text-rose-200">
+                Something went wrong — please try again.
+              </div>
+            )}
+            {signinState === "sent" ? (
+              <div className="rounded-xl border border-lime/30 bg-lime/10 p-4 text-sm leading-relaxed text-white/85">
+                ✅ Check your inbox — we sent a sign-in link to{" "}
+                <span className="font-semibold text-white">{signinEmail.trim()}</span>. Tap it on this device to
+                restore your schedule &amp; profile.
+              </div>
+            ) : (
+              <button type="submit" disabled={signinState === "sending"} className="btn-lime w-full py-3 text-base">
+                {signinState === "sending" ? "Sending…" : "Email me a sign-in link"}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                setSigninMode(false);
+                setSigninState("idle");
+              }}
+              className="w-full text-center text-sm text-white/50 hover:text-white"
+            >
+              ← New here? Join instead
+            </button>
+          </form>
+        )}
+
+        <form onSubmit={submit} className="space-y-3.5" hidden={signinMode}>
           {/* Avatar */}
           <div className="flex items-center gap-3">
             <button

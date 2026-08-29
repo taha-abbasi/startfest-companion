@@ -104,6 +104,38 @@ export interface SendResult {
   error?: string;
 }
 
+/** Passwordless sign-in / restore-profile link. */
+export async function sendSignInEmail(args: {
+  to: string;
+  name: string;
+  signInUrl: string;
+  unsubUrl: string;
+}): Promise<SendResult> {
+  if (!resend) return { ok: true, skipped: true };
+  const { to, name, signInUrl, unsubUrl } = args;
+  const firstName = (name || "there").split(/\s+/)[0];
+  const body = `
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Hi ${escapeHtml(firstName)} — tap below to sign back in to your StartFest schedule on this device. Your saved sessions, photo and links all come right back. 🤠</p>
+    <div style="margin:18px 0 6px;">
+      <a href="${signInUrl}" style="display:inline-block;background:${C.lime};color:${C.ink};text-decoration:none;font-weight:800;font-size:15px;padding:12px 22px;border-radius:10px;">Sign in to StartFest →</a>
+    </div>
+    <p style="margin:16px 0 0;font-size:13px;color:${C.slate};line-height:1.6;">This link is just for you. If you didn't request it, you can safely ignore this email.</p>
+  `;
+  try {
+    const { error } = await resend.emails.send({
+      from: FROM,
+      to,
+      replyTo: REPLY_TO,
+      subject: "Your StartFest sign-in link",
+      html: layout({ preheader: "Sign back in to your StartFest schedule", heading: "Welcome back 👋", body, unsubUrl }),
+    });
+    if (error) return { ok: false, error: String((error as { message?: string }).message ?? error) };
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
 /** Confirmation email when an attendee adds a session. */
 export async function sendConfirmationEmail(args: {
   to: string;
